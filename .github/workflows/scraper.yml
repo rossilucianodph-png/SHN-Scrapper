@@ -1,0 +1,54 @@
+name: SHN Tide Scraper
+
+on:
+  schedule:
+    # 17:00 UTC es exactamente las 14:00 en Argentina (UTC-3)
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+    # Permite ejecutar el scraper de forma manual desde la pestaña Actions en GitHub
+
+# Se requieren permisos de escritura para que el token de GitHub pueda hacer push de los datos
+permissions:
+  contents: write
+
+jobs:
+  scrape-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip' # Acelera las ejecuciones cacheando dependencias
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Ejecutar script de Web Scraping
+      run: |
+        # Por defecto extrae solo Puerto Belgrano (PTBL).
+        # Para extraer todos los puertos en el futuro, puedes cambiar este comando por:
+        # python scraper.py --all
+        python scraper.py --ports PTBL
+
+    - name: Confirmar cambios y empujar al repositorio
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Agregamos los CSVs de la carpeta data
+        git add data/*.csv
+        
+        # Verificamos si hay cambios locales para evitar errores si no hay cambios nuevos
+        if git diff --cached --quiet; then
+          echo "No se detectaron nuevos cambios en los datos de mareas para confirmar."
+        else
+          git commit -m "chore(data): Actualización automática de mareas - $(date +'%Y-%m-%d')"
+          git push
+        fi
