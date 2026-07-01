@@ -3,7 +3,7 @@ name: SHN Tide Scraper
 on:
   schedule:
     # 17:00 UTC es exactamente las 14:00 en Argentina (UTC-3)
-    - cron: '0 17 * * *'
+    - cron: '0 20 *29 * *'
   workflow_dispatch:
     # Permite ejecutar el scraper de forma manual desde la pestaña Actions en GitHub
 
