@@ -34,8 +34,8 @@ jobs:
       run: |
         # Por defecto extrae solo Puerto Belgrano (PTBL).
         # Para extraer todos los puertos en el futuro, puedes cambiar este comando por:
-        # python scraper.py --all
-        python scraper.py --ports PTBL
+        python scraper.py --all
+        # python scraper.py --ports PTBL
 
     - name: Confirmar cambios y empujar al repositorio
       run: |
