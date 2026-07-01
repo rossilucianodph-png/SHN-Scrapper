@@ -3,11 +3,16 @@
 Scraper de Alturas Horarias de Marea del Servicio de Hidrografía Naval (SHN) de Argentina.
 Autor: Ingeniero de Datos
 Licencia: MIT (100% gratuito)
+
+Este script implementa un patrón robusto de ventana deslizante:
+- Descarga los datos completos de AYER realizando dos consultas a la API (12:00 y 23:59)
+  para consolidar las 24 horas del día.
+- Descarga los datos parciales de HOY hasta el momento de la ejecución.
+- Al día siguiente, los datos parciales de hoy se sobrescriben con los datos completos.
 """
 
 import os
 import sys
-import json
 import datetime
 import argparse
 import unicodedata
@@ -68,7 +73,6 @@ def get_available_ports():
     try:
         soup = BeautifulSoup(response.text, 'html.parser')
         ports = {}
-        # Buscamos los elementos 'openmodal' que contienen la metadata de los puertos
         elements = soup.find_all(class_="openmodal")
         for elem in elements:
             code = elem.get("data-estacion")
@@ -85,74 +89,115 @@ def get_available_ports():
         print("[Información] Usando lista de puertos por defecto.")
         return DEFAULT_PORTS
 
-def scrape_port_data(code, name, target_date, output_dir):
+def fetch_api_raw(code, dt):
     """
-    Consulta la API interna del SHN para un puerto específico y una fecha dada.
-    Combina las predicciones astronómicas y las lecturas medidas en un DataFrame
-    y lo guarda en formato CSV.
+    Realiza la llamada HTTP a la API del SHN para una fecha y hora específicas.
+    Retorna el JSON decodificado o None si hay error.
     """
-    # Formato requerido por la API: YYYYMMDDHHmm
-    fecha_api = target_date.strftime("%Y%m%d%H%M")
-    date_filename = target_date.strftime("%Y-%m-%d")
-    
+    fecha_api = dt.strftime("%Y%m%d%H%M")
     url = f"https://www.hidro.gob.ar/api/v1/AlturasHorarias/{code}/{fecha_api}"
-    
     try:
         response = requests.get(url, headers=HEADERS, timeout=20)
         response.raise_for_status()
-        data = response.json()
+        return response.json()
     except Exception as e:
-        print(f"[Error] Error al consultar la API para {name} ({code}): {e}")
+        print(f"[Error] Falló la API para {code} en {fecha_api}: {e}")
+        return None
+
+def scrape_port_data_for_date(code, name, target_date, is_complete, output_dir):
+    """
+    Descarga y combina los datos para una fecha específica.
+    - Si is_complete es True, consulta dos puntos del día (12:00 y 23:59) para armar las 24 horas.
+    - Si is_complete es False, consulta el estado parcial hasta la hora del target_date.
+    """
+    date_filename = target_date.strftime("%Y-%m-%d")
+    print(f"-> Procesando {name} ({code}) para el día {date_filename} (Completo={is_complete})...")
+
+    astronomica_list = []
+    lecturas_list = []
+
+    if is_complete:
+        # Primera mitad: fecha a las 12:00
+        dt_half1 = target_date.replace(hour=12, minute=0, second=0, microsecond=0)
+        data1 = fetch_api_raw(code, dt_half1)
+        if data1:
+            astronomica_list.extend(data1.get("astronomica", []))
+            lecturas_list.extend(data1.get("lecturas", []))
+
+        # Segunda mitad: fecha a las 23:59
+        dt_half2 = target_date.replace(hour=23, minute=59, second=0, microsecond=0)
+        data2 = fetch_api_raw(code, dt_half2)
+        if data2:
+            astronomica_list.extend(data2.get("astronomica", []))
+            lecturas_list.extend(data2.get("lecturas", []))
+    else:
+        # Parcial hasta la hora actual
+        data = fetch_api_raw(code, target_date)
+        if data:
+            astronomica_list.extend(data.get("astronomica", []))
+            lecturas_list.extend(data.get("lecturas", []))
+
+    if not astronomica_list and not lecturas_list:
+        print(f"   [Advertencia] Sin datos descargados para {name} el {date_filename}.")
         return False
 
-    astronomica = data.get("astronomica", [])
-    lecturas = data.get("lecturas", [])
-
-    if not astronomica and not lecturas:
-        print(f"[Advertencia] No se obtuvieron datos (vacío) para {name} ({code}).")
-        return False
-
-    # Crear DataFrames
-    df_astro = pd.DataFrame(astronomica)
-    df_lect = pd.DataFrame(lecturas)
+    # Crear DataFrames y eliminar duplicados de fecha
+    df_astro = pd.DataFrame(astronomica_list)
+    df_lect = pd.DataFrame(lecturas_list)
 
     if not df_astro.empty:
+        df_astro = df_astro.drop_duplicates(subset=["fecha"])
         df_astro = df_astro.rename(columns={"altura": "altura_astronomica_m"})
         df_astro["fecha"] = pd.to_datetime(df_astro["fecha"])
     else:
         df_astro = pd.DataFrame(columns=["fecha", "altura_astronomica_m"])
 
     if not df_lect.empty:
+        df_lect = df_lect.drop_duplicates(subset=["fecha"])
         df_lect = df_lect.rename(columns={"altura": "altura_medida_m"})
         df_lect["fecha"] = pd.to_datetime(df_lect["fecha"])
     else:
         df_lect = pd.DataFrame(columns=["fecha", "altura_medida_m"])
 
-    # Combinación externa (outer join) sobre el campo fecha para alinear los datos
+    # Combinación externa (outer join) para alinear mediciones y predicciones
     df_merged = pd.merge(df_astro, df_lect, on="fecha", how="outer")
     df_merged = df_merged.sort_values(by="fecha")
 
-    # Formatear la fecha para la presentación en CSV
+    # Filtrar estrictamente para mantener solo los registros del día target_date
+    df_merged["fecha_dt"] = pd.to_datetime(df_merged["fecha"])
+    target_date_only = target_date.date()
+    df_merged = df_merged[df_merged["fecha_dt"].dt.date == target_date_only]
+    df_merged = df_merged.drop(columns=["fecha_dt"])
+
+    if df_merged.empty:
+        print(f"   [Advertencia] No quedaron registros para el día {date_filename} después del filtrado.")
+        return False
+
+    # Redondear valores numéricos para limpieza visual
+    for col in ["altura_astronomica_m", "altura_medida_m"]:
+        if col in df_merged.columns:
+            df_merged[col] = df_merged[col].round(2)
+
+    # Formatear la fecha para presentación en CSV
     df_merged["fecha"] = df_merged["fecha"].dt.strftime("%Y-%m-%dT%H:%M:%S")
 
-    # Naming convention: [Nombre_del_Puerto]_[Tipo_de_Dato]_[YYYY-MM-DD].csv
+    # Guardar a CSV
     sanitized_port_name = sanitize_name(name)
     filename = f"{sanitized_port_name}_Mareas_{date_filename}.csv"
     filepath = os.path.join(output_dir, filename)
 
     try:
         os.makedirs(output_dir, exist_ok=True)
-        # Guardar en UTF-8 y sin índice numérico
         df_merged.to_csv(filepath, index=False, encoding="utf-8")
-        print(f"[Éxito] Datos guardados en: {filepath}")
+        print(f"   [Éxito] Archivo guardado: {filepath}")
         return True
     except Exception as e:
-        print(f"[Error] No se pudo guardar el archivo {filepath}: {e}")
+        print(f"   [Error] No se pudo guardar el archivo {filepath}: {e}")
         return False
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Extrae alturas horarias del Servicio de Hidrografía Naval (SHN) de Argentina."
+        description="Extrae alturas horarias completas del Servicio de Hidrografía Naval (SHN) de Argentina."
     )
     parser.add_argument(
         "--ports", 
@@ -168,7 +213,7 @@ def main():
     parser.add_argument(
         "--date", 
         type=str, 
-        help="Fecha de consulta en formato YYYY-MM-DD. Por defecto: Fecha actual de Argentina (UTC-3)"
+        help="Fecha de consulta en formato YYYY-MM-DD. Por defecto: Procesa ayer (completo) y hoy (parcial)."
     )
     parser.add_argument(
         "--output-dir", 
@@ -181,21 +226,7 @@ def main():
 
     # Configurar zona horaria de Argentina (UTC-3)
     tz_ar = datetime.timezone(datetime.timedelta(hours=-3))
-    
-    if args.date:
-        try:
-            # Parsear fecha personalizada (asumiendo mediodía para la consulta)
-            base_date = datetime.datetime.strptime(args.date, "%Y-%m-%d")
-            # Se consulta a la hora actual de ejecución para obtener las últimas lecturas
-            now_ar = datetime.datetime.now(tz_ar)
-            target_date = base_date.replace(hour=now_ar.hour, minute=now_ar.minute, tzinfo=tz_ar)
-        except ValueError:
-            print("[Error] Formato de fecha inválido. Utilice YYYY-MM-DD.")
-            sys.exit(0)
-    else:
-        target_date = datetime.datetime.now(tz_ar)
-
-    print(f"=== Iniciando Extracción SHN para la fecha: {target_date.strftime('%Y-%m-%d %H:%M:%S %Z')} ===")
+    now_ar = datetime.datetime.now(tz_ar)
 
     # Obtener puertos disponibles (dinámico + fallback)
     available_ports = get_available_ports()
@@ -218,14 +249,46 @@ def main():
             sys.exit(0)
         print(f"Modo: Puertos específicos -> {', '.join(ports_to_process.values())}")
 
-    # Ejecutar extracción
-    success_count = 0
-    for code, name in ports_to_process.items():
-        success = scrape_port_data(code, name, target_date, args.output_dir)
-        if success:
-            success_count += 1
+    # Determinar qué fechas procesar
+    jobs = []  # Lista de tuplas (date, is_complete)
+    
+    if args.date:
+        try:
+            specified_date = datetime.datetime.strptime(args.date, "%Y-%m-%d").date()
+            if specified_date < now_ar.date():
+                # Fecha pasada: se puede descargar completa
+                target_dt = datetime.datetime.combine(specified_date, datetime.time(12, 0), tzinfo=tz_ar)
+                jobs.append((target_dt, True))
+            elif specified_date == now_ar.date():
+                # Fecha de hoy: solo se puede descargar parcial
+                jobs.append((now_ar, False))
+            else:
+                print("[Error] La fecha especificada es del futuro. No hay datos disponibles.")
+                sys.exit(0)
+        except ValueError:
+            print("[Error] Formato de fecha inválido. Utilice YYYY-MM-DD.")
+            sys.exit(0)
+    else:
+        # Por defecto: AYER (completo) y HOY (parcial)
+        yesterday_date = now_ar.date() - datetime.timedelta(days=1)
+        yesterday_dt = datetime.datetime.combine(yesterday_date, datetime.time(12, 0), tzinfo=tz_ar)
+        
+        jobs.append((yesterday_dt, True))  # Ayer completo
+        jobs.append((now_ar, False))       # Hoy parcial
 
-    print(f"\n=== Proceso Finalizado: {success_count}/{len(ports_to_process)} puertos procesados con éxito ===")
+    # Ejecutar extracción
+    print(f"=== Iniciando Extracción SHN a las {now_ar.strftime('%Y-%m-%d %H:%M:%S %Z')} ===")
+    
+    success_count = 0
+    total_jobs = len(ports_to_process) * len(jobs)
+    
+    for code, name in ports_to_process.items():
+        for target_date, is_complete in jobs:
+            success = scrape_port_data_for_date(code, name, target_date, is_complete, args.output_dir)
+            if success:
+                success_count += 1
+
+    print(f"\n=== Proceso Finalizado: {success_count}/{total_jobs} reportes generados con éxito ===")
 
 if __name__ == "__main__":
     try:
