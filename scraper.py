@@ -176,7 +176,8 @@ def scrape_port_data_for_date(code, name, target_date, is_complete, output_dir):
     # Redondear valores numéricos para limpieza visual
     for col in ["altura_astronomica_m", "altura_medida_m"]:
         if col in df_merged.columns:
-            df_merged[col] = df_merged[col].round(2)
+          df_merged[col] = pd.to_numeric(df_merged[col], errors='coerce')  
+          df_merged[col] = df_merged[col].round(2)
 
     # Formatear la fecha para presentación en CSV
     df_merged["fecha"] = df_merged["fecha"].dt.strftime("%Y-%m-%dT%H:%M:%S")
