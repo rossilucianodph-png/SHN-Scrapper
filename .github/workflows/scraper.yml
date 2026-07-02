@@ -43,7 +43,7 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         
         # Agregamos los CSVs de la carpeta data
-        git add data/*.csv
+        git add data/
         
         # Verificamos si hay cambios locales para evitar errores si no hay cambios nuevos
         if git diff --cached --quiet; then
