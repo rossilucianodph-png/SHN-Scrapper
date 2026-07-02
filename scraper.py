@@ -97,7 +97,7 @@ def fetch_api_raw(code, dt):
     """
     fecha_api = dt.strftime("%Y%m%d%H%M")
     url = f"https://www.hidro.gob.ar/api/v1/AlturasHorarias/{code}/{fecha_api}"
-    time.sleep(3)
+    time.sleep(10)
     try:
         response = requests.get(url, headers=HEADERS, timeout=20)
         response.raise_for_status()
