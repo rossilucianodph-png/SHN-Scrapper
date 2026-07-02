@@ -185,10 +185,13 @@ def scrape_port_data_for_date(code, name, target_date, is_complete, output_dir):
     # Guardar a CSV
     sanitized_port_name = sanitize_name(name)
     filename = f"{sanitized_port_name}_Mareas_{date_filename}.csv"
-    filepath = os.path.join(output_dir, filename)
+    
+    # Crear la ruta con una subcarpeta para cada puerto
+    port_dir = os.path.join(output_dir, sanitized_port_name)
+    filepath = os.path.join(port_dir, filename)
 
     try:
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(port_dir, exist_ok=True)
         df_merged.to_csv(filepath, index=False, encoding="utf-8")
         print(f"   [Éxito] Archivo guardado: {filepath}")
         return True
