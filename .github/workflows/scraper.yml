@@ -3,7 +3,7 @@ name: SHN Tide Scraper
 on:
   schedule:
     # 17:00 UTC es exactamente las 14:00 en Argentina (UTC-3)
-    - cron: '0 21 * * *'
+    - cron: '0 17 * * *'
   workflow_dispatch:
     # Permite ejecutar el scraper de forma manual desde la pestaña Actions en GitHub
 
@@ -23,7 +23,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        cache: 'pip' # Acelera las ejecuciones cacheando dependencias
+        cache: 'pip' # Acelera las ejecuciones subsecuentes cacheando dependencias
 
     - name: Instalar dependencias
       run: |
@@ -32,20 +32,23 @@ jobs:
 
     - name: Ejecutar script de Web Scraping
       run: |
-        # Por defecto extrae solo Puerto Belgrano (PTBL).
+        # Por defecto extrae solo Puerto Belgrano (PTBL) como se solicitó.
         # Para extraer todos los puertos en el futuro, puedes cambiar este comando por:
-        python scraper.py --all
-        # python scraper.py --ports PTBL
+        # python scraper.py --all
+        python scraper.py --ports PTBL
+
+    - name: Generar tabla resumen Puerto Belgrano
+      run: python generate_summary.py
 
     - name: Confirmar cambios y empujar al repositorio
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         
-        # Agregamos los CSVs de la carpeta data
+        # Agregamos todo el contenido de la carpeta data (CSVs y resumen HTML)
         git add data/
         
-        # Verificamos si hay cambios locales para evitar errores si no hay cambios nuevos
+        # Verificamos si hay cambios locales para evitar que falle el comando git commit si no hay cambios
         if git diff --cached --quiet; then
           echo "No se detectaron nuevos cambios en los datos de mareas para confirmar."
         else
