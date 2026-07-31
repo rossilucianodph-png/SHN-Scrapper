@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen Niveles - Puerto Belgrano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e0;
+        }
+        .legend-color.green {
+            background: #48bb78;
+        }
+        .legend-color.red {
+            background: #f56565;
+        }
+        .table-container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th {
+            background: #2d3748;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        th:first-child {
+            text-align: left;
+            min-width: 100px;
+        }
+        th:last-child {
+            min-width: 120px;
+        }
+        td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: #2d3748;
+            background: #f7fafc;
+        }
+        td:last-child {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+        tr:hover td {
+            background: #edf2f7;
+        }
+        tr:hover td:first-child {
+            background: #e2e8f0;
+        }
+        .cell {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            min-width: 60px;
+        }
+        .cell.green {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .cell.red {
+            background: #fed7d7;
+            color: #9b2c2c;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .cell.no-data {
+            background: #e2e8f0;
+            color: #a0aec0;
+        }
+        .alert-badge {
+            display: inline-block;
+            background: #fc8181;
+            color: #742a2a;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            background: #ebf8ff;
+            border-bottom: 1px solid #bee3f8;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2b6cb0;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #4a5568;
+        }
+        .filter-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: #fffaf0;
+            border-bottom: 1px solid #feebc8;
+        }
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: #4a5568;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .filter-toggle input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2b6cb0;
+        }
+        .filter-dates {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-field {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+        .filter-field input {
+            padding: 6px 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #2d3748;
+            background: white;
+        }
+        .filter-field input:disabled {
+            background: #edf2f7;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Resumen de Niveles - Puerto Belgrano</h1>
+            <p>Monitoreo de niveles entre 08:00 y 16:00 hs | Umbral de alerta: 3.50m</p>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color green"></div>
+                <span>Nivel ≤ 3.50m (Normal)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color red"></div>
+                <span>Nivel > 3.50m (Alerta)</span>
+            </div>
+        </div>
+
+        <div class="filter-panel">
+            <label class="filter-toggle">
+                <input type="checkbox" id="fecha-toggle" checked>
+                <span>Filtrar por rango de fechas</span>
+            </label>
+            <div class="filter-dates">
+                <div class="filter-field">
+                    <label for="fecha-inicio">Desde:</label>
+                    <input type="date" id="fecha-inicio" value="2026-07-01">
+                </div>
+                <div class="filter-field">
+                    <label for="fecha-fin">Hasta:</label>
+                    <input type="date" id="fecha-fin" value="2026-07-01">
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-total">1</div>
+                <div class="stat-label">Días analizados</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-alerta" style="color: #e53e3e;">1</div>
+                <div class="stat-label">Días con alerta</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-normal" style="color: #38a169;">0</div>
+                <div class="stat-label">Días sin alerta</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="tabla-resumen">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>08:00</th>
+                        <th>09:00</th>
+                        <th>10:00</th>
+                        <th>11:00</th>
+                        <th>12:00</th>
+                        <th>13:00</th>
+                        <th>14:00</th>
+                        <th>15:00</th>
+                        <th>16:00</th>
+                        <th>Rango Alerta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-fecha="2026-07-01" data-alerta="1">
+                        <td>01/07/2026</td>
+                        <td><span class="cell red">5.03</span></td>
+                        <td><span class="cell red">4.79</span></td>
+                        <td><span class="cell red">4.33</span></td>
+                        <td><span class="cell red">3.75</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="alert-badge">08:00 - 12:00</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            <p>Generado automáticamente el 31/07/2026 a las 10:43</p>
+            <p>Datos fuente: Servicio de Hidrografía Naval (SHN) de Argentina</p>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const toggle = document.getElementById('fecha-toggle');
+            const inicio = document.getElementById('fecha-inicio');
+            const fin = document.getElementById('fecha-fin');
+            const filas = document.querySelectorAll('#tabla-resumen tbody tr');
+            const statTotal = document.getElementById('stat-total');
+            const statAlerta = document.getElementById('stat-alerta');
+            const statNormal = document.getElementById('stat-normal');
+
+            function actualizarStats() {
+                let total = 0;
+                let alertas = 0;
+                filas.forEach(function(fila) {
+                    if (fila.style.display !== 'none') {
+                        total++;
+                        if (fila.dataset.alerta === '1') {
+                            alertas++;
+                        }
+                    }
+                });
+                statTotal.textContent = total;
+                statAlerta.textContent = alertas;
+                statNormal.textContent = total - alertas;
+            }
+
+            function aplicarFiltro() {
+                const activo = toggle.checked;
+                inicio.disabled = !activo;
+                fin.disabled = !activo;
+
+                const desde = activo && inicio.value ? new Date(inicio.value + 'T00:00:00') : null;
+                const hasta = activo && fin.value ? new Date(fin.value + 'T23:59:59') : null;
+
+                filas.forEach(function(fila) {
+                    let visible = true;
+                    if (activo) {
+                        const f = new Date(fila.dataset.fecha + 'T00:00:00');
+                        if (desde && f < desde) visible = false;
+                        if (hasta && f > hasta) visible = false;
+                    }
+                    fila.style.display = visible ? '' : 'none';
+                });
+
+                actualizarStats();
+            }
+
+            toggle.addEventListener('change', aplicarFiltro);
+            inicio.addEventListener('change', aplicarFiltro);
+            fin.addEventListener('change', aplicarFiltro);
+
+            aplicarFiltro();
+        })();
+    </script>
+</body>
+</html>
