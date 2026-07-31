@@ -640,6 +640,11 @@ def generate_html(day_results):
             clon.querySelectorAll('tbody tr').forEach(function(fila) {
                 if (fila.style.display === 'none') fila.remove();
             });
+            clon.style.borderCollapse = 'collapse';
+            clon.querySelectorAll('th, td').forEach(function(celda) {
+                celda.style.border = '1px solid black';
+                celda.style.borderCollapse = 'collapse';
+            });
             const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
             const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
             guardarConDialogo(blob, 'resumen_puerto_belgrano.xls', 'application/vnd.ms-excel', ['.xls']);
@@ -660,8 +665,10 @@ def generate_html(day_results):
             const totalPages = Math.max(1, Math.ceil(totalRows / rowsPerPage));
 
             function rgb(cssBg) {
-                const m = /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(cssBg || '');
-                return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : null;
+                let m = /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(cssBg || '');
+                if (m) return [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255];
+                m = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(cssBg || '');
+                return m ? [parseInt(m[1], 10) / 255, parseInt(m[2], 10) / 255, parseInt(m[3], 10) / 255] : null;
             }
             function esc(t) { return String(t).replace(/\\\\/g, '\\\\\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)'); }
             function num(n) { return n.toFixed(3); }
@@ -670,7 +677,7 @@ def generate_html(day_results):
             for (let p = 0; p < totalPages; p++) {
                 const L = [];
                 L.push('q');
-                L.push(num(44 / 255) + ' ' + num(55 / 255) + ' ' + num(72 / 255) + ' rg ' + xStart + ' ' + yTop + ' ' + tableW + ' ' + HH + ' re f');
+                L.push(num(44 / 255) + ' ' + num(55 / 255) + ' ' + num(72 / 255) + ' rg ' + xStart + ' ' + yTop + ' ' + tableW + ' ' + HH + ' re f n');
                 let cx = xStart;
                 for (let i = 0; i < encabezados.length; i++) {
                     const hw = CW[i];
@@ -690,7 +697,7 @@ def generate_html(day_results):
                         if (span && span.style && span.style.background) {
                             const c = rgb(span.style.background);
                             if (c) {
-                                L.push(num(c[0]) + ' ' + num(c[1]) + ' ' + num(c[2]) + ' rg ' + x + ' ' + y + ' ' + cw + ' ' + RH + ' re f');
+                                L.push(num(c[0]) + ' ' + num(c[1]) + ' ' + num(c[2]) + ' rg ' + x + ' ' + y + ' ' + cw + ' ' + RH + ' re f n');
                             }
                             L.push('BT /F1 7.5 Tf 0 0 0 rg 1 1 1 RG 0.3 w 2 Tr ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj 0 Tr ET');
                         } else if (span && span.classList.contains('no-data')) {
@@ -709,7 +716,7 @@ def generate_html(day_results):
             objs.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
             objs.push('<< /Type /Catalog /Pages 3 0 R >>');
             const kids = [];
-            for (let k = 0; k < totalPages; k++) kids.push(String(4 + k * 2));
+            for (let k = 0; k < totalPages; k++) kids.push(String(4 + k * 2) + ' 0 R');
             objs.push('<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + totalPages + ' >>');
             for (let q = 0; q < totalPages; q++) {
                 objs.push('<< /Type /Page /Parent 3 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Contents ' + (5 + q * 2) + ' 0 R /Resources << /Font << /F1 1 0 R >> >> >>');
