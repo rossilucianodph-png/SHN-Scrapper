@@ -253,26 +253,26 @@
             <div class="filter-dates">
                 <div class="filter-field">
                     <label for="fecha-inicio">Desde:</label>
-                    <input type="date" id="fecha-inicio" value="2026-07-01">
+                    <input type="date" id="fecha-inicio" value="2026-06-30">
                 </div>
                 <div class="filter-field">
                     <label for="fecha-fin">Hasta:</label>
-                    <input type="date" id="fecha-fin" value="2026-07-01">
+                    <input type="date" id="fecha-fin" value="2026-07-31">
                 </div>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-value" id="stat-total">1</div>
+                <div class="stat-value" id="stat-total">32</div>
                 <div class="stat-label">Días analizados</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="stat-alerta" style="color: #e53e3e;">1</div>
+                <div class="stat-value" id="stat-alerta" style="color: #e53e3e;">30</div>
                 <div class="stat-label">Días con alerta</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="stat-normal" style="color: #38a169;">0</div>
+                <div class="stat-value" id="stat-normal" style="color: #38a169;">2</div>
                 <div class="stat-label">Días sin alerta</div>
             </div>
         </div>
@@ -295,18 +295,421 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr data-fecha="2026-06-30" data-alerta="1">
+                        <td>30/06/2026</td>
+                        <td><span class="cell green">3.26</span></td>
+                        <td><span class="cell green">2.85</span></td>
+                        <td><span class="cell green">2.11</span></td>
+                        <td><span class="cell green">1.46</span></td>
+                        <td><span class="cell green">1.14</span></td>
+                        <td><span class="cell green">1.33</span></td>
+                        <td><span class="cell green">1.94</span></td>
+                        <td><span class="cell green">2.92</span></td>
+                        <td><span class="cell red">3.81</span></td>
+                        <td><span class="alert-badge">16:00 - 17:00</span></td>
+                    </tr>
                     <tr data-fecha="2026-07-01" data-alerta="1">
                         <td>01/07/2026</td>
                         <td><span class="cell red">5.03</span></td>
                         <td><span class="cell red">4.79</span></td>
                         <td><span class="cell red">4.33</span></td>
                         <td><span class="cell red">3.75</span></td>
-                        <td><span class="cell no-data">S/D</span></td>
-                        <td><span class="cell no-data">S/D</span></td>
-                        <td><span class="cell no-data">S/D</span></td>
-                        <td><span class="cell no-data">S/D</span></td>
-                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell green">3.08</span></td>
+                        <td><span class="cell green">2.46</span></td>
+                        <td><span class="cell green">2.36</span></td>
+                        <td><span class="cell green">2.95</span></td>
+                        <td><span class="cell red">3.74</span></td>
+                        <td><span class="alert-badge">08:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-02" data-alerta="1">
+                        <td>02/07/2026</td>
+                        <td><span class="cell red">3.77</span></td>
+                        <td><span class="cell red">3.53</span></td>
+                        <td><span class="cell green">3.07</span></td>
+                        <td><span class="cell green">2.30</span></td>
+                        <td><span class="cell green">1.45</span></td>
+                        <td><span class="cell green">0.84</span></td>
+                        <td><span class="cell green">0.82</span></td>
+                        <td><span class="cell green">1.44</span></td>
+                        <td><span class="cell green">2.37</span></td>
+                        <td><span class="alert-badge">08:00 - 10:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-03" data-alerta="1">
+                        <td>03/07/2026</td>
+                        <td><span class="cell red">3.86</span></td>
+                        <td><span class="cell red">3.84</span></td>
+                        <td><span class="cell red">3.52</span></td>
+                        <td><span class="cell green">3.03</span></td>
+                        <td><span class="cell green">2.21</span></td>
+                        <td><span class="cell green">1.33</span></td>
+                        <td><span class="cell green">0.74</span></td>
+                        <td><span class="cell green">0.87</span></td>
+                        <td><span class="cell green">1.67</span></td>
+                        <td><span class="alert-badge">08:00 - 11:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-04" data-alerta="1">
+                        <td>04/07/2026</td>
+                        <td><span class="cell red">3.73</span></td>
+                        <td><span class="cell red">3.91</span></td>
+                        <td><span class="cell red">3.81</span></td>
+                        <td><span class="cell green">3.37</span></td>
+                        <td><span class="cell green">2.80</span></td>
+                        <td><span class="cell green">2.01</span></td>
+                        <td><span class="cell green">1.20</span></td>
+                        <td><span class="cell green">0.78</span></td>
+                        <td><span class="cell green">1.07</span></td>
+                        <td><span class="alert-badge">08:00 - 11:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-05" data-alerta="1">
+                        <td>05/07/2026</td>
+                        <td><span class="cell red">3.51</span></td>
+                        <td><span class="cell red">3.82</span></td>
+                        <td><span class="cell red">3.86</span></td>
+                        <td><span class="cell red">3.65</span></td>
+                        <td><span class="cell green">3.13</span></td>
+                        <td><span class="cell green">2.38</span></td>
+                        <td><span class="cell green">1.46</span></td>
+                        <td><span class="cell green">0.86</span></td>
+                        <td><span class="cell green">1.25</span></td>
                         <td><span class="alert-badge">08:00 - 12:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-06" data-alerta="1">
+                        <td>06/07/2026</td>
+                        <td><span class="cell green">3.18</span></td>
+                        <td><span class="cell red">3.74</span></td>
+                        <td><span class="cell red">3.90</span></td>
+                        <td><span class="cell red">3.77</span></td>
+                        <td><span class="cell green">3.41</span></td>
+                        <td><span class="cell green">2.76</span></td>
+                        <td><span class="cell green">1.87</span></td>
+                        <td><span class="cell green">1.04</span></td>
+                        <td><span class="cell green">0.55</span></td>
+                        <td><span class="alert-badge">09:00 - 12:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-07" data-alerta="1">
+                        <td>07/07/2026</td>
+                        <td><span class="cell green">2.21</span></td>
+                        <td><span class="cell green">3.08</span></td>
+                        <td><span class="cell red">3.51</span></td>
+                        <td><span class="cell red">3.51</span></td>
+                        <td><span class="cell green">3.26</span></td>
+                        <td><span class="cell green">2.76</span></td>
+                        <td><span class="cell green">1.75</span></td>
+                        <td><span class="cell green">1.24</span></td>
+                        <td><span class="cell green">0.67</span></td>
+                        <td><span class="alert-badge">10:00 - 12:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-08" data-alerta="1">
+                        <td>08/07/2026</td>
+                        <td><span class="cell green">2.77</span></td>
+                        <td><span class="cell red">3.60</span></td>
+                        <td><span class="cell red">4.03</span></td>
+                        <td><span class="cell red">4.23</span></td>
+                        <td><span class="cell red">4.24</span></td>
+                        <td><span class="cell red">3.96</span></td>
+                        <td><span class="cell green">3.45</span></td>
+                        <td><span class="cell green">2.76</span></td>
+                        <td><span class="cell green">1.90</span></td>
+                        <td><span class="alert-badge">09:00 - 14:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-09" data-alerta="1">
+                        <td>09/07/2026</td>
+                        <td><span class="cell green">2.19</span></td>
+                        <td><span class="cell green">3.24</span></td>
+                        <td><span class="cell red">3.94</span></td>
+                        <td><span class="cell red">4.25</span></td>
+                        <td><span class="cell red">4.38</span></td>
+                        <td><span class="cell red">4.26</span></td>
+                        <td><span class="cell red">3.89</span></td>
+                        <td><span class="cell green">3.28</span></td>
+                        <td><span class="cell green">2.45</span></td>
+                        <td><span class="alert-badge">10:00 - 15:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-10" data-alerta="1">
+                        <td>10/07/2026</td>
+                        <td><span class="cell green">1.41</span></td>
+                        <td><span class="cell green">2.38</span></td>
+                        <td><span class="cell green">3.33</span></td>
+                        <td><span class="cell red">3.92</span></td>
+                        <td><span class="cell red">4.14</span></td>
+                        <td><span class="cell red">4.23</span></td>
+                        <td><span class="cell red">4.11</span></td>
+                        <td><span class="cell red">3.77</span></td>
+                        <td><span class="cell green">3.14</span></td>
+                        <td><span class="alert-badge">11:00 - 16:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-11" data-alerta="1">
+                        <td>11/07/2026</td>
+                        <td><span class="cell green">0.83</span></td>
+                        <td><span class="cell green">1.60</span></td>
+                        <td><span class="cell green">2.43</span></td>
+                        <td><span class="cell green">3.18</span></td>
+                        <td><span class="cell red">3.76</span></td>
+                        <td><span class="cell red">4.01</span></td>
+                        <td><span class="cell red">4.10</span></td>
+                        <td><span class="cell red">3.88</span></td>
+                        <td><span class="cell green">3.50</span></td>
+                        <td><span class="alert-badge">12:00 - 16:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-12" data-alerta="1">
+                        <td>12/07/2026</td>
+                        <td><span class="cell green">0.70</span></td>
+                        <td><span class="cell green">0.83</span></td>
+                        <td><span class="cell green">1.49</span></td>
+                        <td><span class="cell green">2.21</span></td>
+                        <td><span class="cell green">2.94</span></td>
+                        <td><span class="cell red">3.53</span></td>
+                        <td><span class="cell red">3.86</span></td>
+                        <td><span class="cell red">3.99</span></td>
+                        <td><span class="cell red">3.85</span></td>
+                        <td><span class="alert-badge">13:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-13" data-alerta="1">
+                        <td>13/07/2026</td>
+                        <td><span class="cell green">1.14</span></td>
+                        <td><span class="cell green">0.75</span></td>
+                        <td><span class="cell green">0.81</span></td>
+                        <td><span class="cell green">1.41</span></td>
+                        <td><span class="cell green">1.87</span></td>
+                        <td><span class="cell green">2.37</span></td>
+                        <td><span class="cell green">3.00</span></td>
+                        <td><span class="cell green">3.47</span></td>
+                        <td><span class="cell red">3.62</span></td>
+                        <td><span class="alert-badge">16:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-14" data-alerta="1">
+                        <td>14/07/2026</td>
+                        <td><span class="cell green">2.57</span></td>
+                        <td><span class="cell green">2.01</span></td>
+                        <td><span class="cell green">1.48</span></td>
+                        <td><span class="cell green">1.47</span></td>
+                        <td><span class="cell green">1.50</span></td>
+                        <td><span class="cell green">2.62</span></td>
+                        <td><span class="cell green">3.23</span></td>
+                        <td><span class="cell red">3.84</span></td>
+                        <td><span class="cell red">4.07</span></td>
+                        <td><span class="alert-badge">15:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-15" data-alerta="1">
+                        <td>15/07/2026</td>
+                        <td><span class="cell green">3.09</span></td>
+                        <td><span class="cell green">2.62</span></td>
+                        <td><span class="cell green">1.86</span></td>
+                        <td><span class="cell green">1.35</span></td>
+                        <td><span class="cell green">1.31</span></td>
+                        <td><span class="cell green">1.79</span></td>
+                        <td><span class="cell green">2.48</span></td>
+                        <td><span class="cell green">3.26</span></td>
+                        <td><span class="cell red">3.88</span></td>
+                        <td><span class="alert-badge">16:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-16" data-alerta="1">
+                        <td>16/07/2026</td>
+                        <td><span class="cell red">3.54</span></td>
+                        <td><span class="cell green">3.24</span></td>
+                        <td><span class="cell green">2.64</span></td>
+                        <td><span class="cell green">2.00</span></td>
+                        <td><span class="cell green">1.42</span></td>
+                        <td><span class="cell green">1.34</span></td>
+                        <td><span class="cell green">1.99</span></td>
+                        <td><span class="cell green">2.77</span></td>
+                        <td><span class="cell red">3.60</span></td>
+                        <td><span class="alert-badge">08:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-17" data-alerta="1">
+                        <td>17/07/2026</td>
+                        <td><span class="cell red">4.04</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="alert-badge">08:00 - 09:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-18" data-alerta="1">
+                        <td>18/07/2026</td>
+                        <td><span class="cell red">4.33</span></td>
+                        <td><span class="cell red">4.35</span></td>
+                        <td><span class="cell red">4.04</span></td>
+                        <td><span class="cell red">3.63</span></td>
+                        <td><span class="cell green">2.97</span></td>
+                        <td><span class="cell green">2.19</span></td>
+                        <td><span class="cell green">1.58</span></td>
+                        <td><span class="cell green">1.54</span></td>
+                        <td><span class="cell green">2.24</span></td>
+                        <td><span class="alert-badge">08:00 - 12:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-19" data-alerta="1">
+                        <td>19/07/2026</td>
+                        <td><span class="cell red">4.00</span></td>
+                        <td><span class="cell red">4.05</span></td>
+                        <td><span class="cell red">3.99</span></td>
+                        <td><span class="cell red">3.76</span></td>
+                        <td><span class="cell green">3.15</span></td>
+                        <td><span class="cell green">2.34</span></td>
+                        <td><span class="cell green">1.43</span></td>
+                        <td><span class="cell green">0.87</span></td>
+                        <td><span class="cell green">1.07</span></td>
+                        <td><span class="alert-badge">08:00 - 12:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-20" data-alerta="1">
+                        <td>20/07/2026</td>
+                        <td><span class="cell red">3.61</span></td>
+                        <td><span class="cell red">4.04</span></td>
+                        <td><span class="cell red">4.17</span></td>
+                        <td><span class="cell red">4.07</span></td>
+                        <td><span class="cell red">3.65</span></td>
+                        <td><span class="cell green">3.04</span></td>
+                        <td><span class="cell green">2.14</span></td>
+                        <td><span class="cell green">1.25</span></td>
+                        <td><span class="cell green">0.72</span></td>
+                        <td><span class="alert-badge">08:00 - 13:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-21" data-alerta="1">
+                        <td>21/07/2026</td>
+                        <td><span class="cell green">3.28</span></td>
+                        <td><span class="cell red">4.06</span></td>
+                        <td><span class="cell red">4.33</span></td>
+                        <td><span class="cell red">4.44</span></td>
+                        <td><span class="cell red">4.20</span></td>
+                        <td><span class="cell red">3.78</span></td>
+                        <td><span class="cell green">3.10</span></td>
+                        <td><span class="cell green">2.26</span></td>
+                        <td><span class="cell green">1.31</span></td>
+                        <td><span class="alert-badge">09:00 - 14:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-22" data-alerta="1">
+                        <td>22/07/2026</td>
+                        <td><span class="cell green">2.35</span></td>
+                        <td><span class="cell green">3.40</span></td>
+                        <td><span class="cell red">3.94</span></td>
+                        <td><span class="cell red">4.17</span></td>
+                        <td><span class="cell red">4.19</span></td>
+                        <td><span class="cell red">3.97</span></td>
+                        <td><span class="cell green">3.41</span></td>
+                        <td><span class="cell green">2.63</span></td>
+                        <td><span class="cell green">1.75</span></td>
+                        <td><span class="alert-badge">10:00 - 14:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-23" data-alerta="1">
+                        <td>23/07/2026</td>
+                        <td><span class="cell green">1.21</span></td>
+                        <td><span class="cell green">2.10</span></td>
+                        <td><span class="cell green">3.00</span></td>
+                        <td><span class="cell red">3.65</span></td>
+                        <td><span class="cell red">3.91</span></td>
+                        <td><span class="cell red">3.86</span></td>
+                        <td><span class="cell red">3.56</span></td>
+                        <td><span class="cell green">2.96</span></td>
+                        <td><span class="cell green">2.15</span></td>
+                        <td><span class="alert-badge">11:00 - 15:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-24" data-alerta="1">
+                        <td>24/07/2026</td>
+                        <td><span class="cell green">0.67</span></td>
+                        <td><span class="cell green">1.45</span></td>
+                        <td><span class="cell green">2.45</span></td>
+                        <td><span class="cell green">3.21</span></td>
+                        <td><span class="cell red">3.66</span></td>
+                        <td><span class="cell red">3.89</span></td>
+                        <td><span class="cell red">3.94</span></td>
+                        <td><span class="cell red">3.66</span></td>
+                        <td><span class="cell green">3.13</span></td>
+                        <td><span class="alert-badge">12:00 - 16:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-25" data-alerta="1">
+                        <td>25/07/2026</td>
+                        <td><span class="cell green">0.65</span></td>
+                        <td><span class="cell green">1.10</span></td>
+                        <td><span class="cell green">1.90</span></td>
+                        <td><span class="cell green">2.63</span></td>
+                        <td><span class="cell green">3.47</span></td>
+                        <td><span class="cell red">3.86</span></td>
+                        <td><span class="cell red">4.07</span></td>
+                        <td><span class="cell red">4.06</span></td>
+                        <td><span class="cell red">3.74</span></td>
+                        <td><span class="alert-badge">13:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-26" data-alerta="1">
+                        <td>26/07/2026</td>
+                        <td><span class="cell green">1.45</span></td>
+                        <td><span class="cell green">1.22</span></td>
+                        <td><span class="cell green">1.62</span></td>
+                        <td><span class="cell green">2.36</span></td>
+                        <td><span class="cell green">3.10</span></td>
+                        <td><span class="cell red">3.73</span></td>
+                        <td><span class="cell red">4.09</span></td>
+                        <td><span class="cell red">4.33</span></td>
+                        <td><span class="cell red">4.38</span></td>
+                        <td><span class="alert-badge">13:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-27" data-alerta="1">
+                        <td>27/07/2026</td>
+                        <td><span class="cell green">2.12</span></td>
+                        <td><span class="cell green">1.46</span></td>
+                        <td><span class="cell green">1.00</span></td>
+                        <td><span class="cell green">1.17</span></td>
+                        <td><span class="cell green">1.86</span></td>
+                        <td><span class="cell green">2.62</span></td>
+                        <td><span class="cell green">3.39</span></td>
+                        <td><span class="cell red">3.85</span></td>
+                        <td><span class="cell red">4.06</span></td>
+                        <td><span class="alert-badge">15:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-28" data-alerta="0">
+                        <td>28/07/2026</td>
+                        <td><span class="cell green">3.18</span></td>
+                        <td><span class="cell green">2.55</span></td>
+                        <td><span class="cell green">1.92</span></td>
+                        <td><span class="cell green">1.52</span></td>
+                        <td><span class="cell green">1.71</span></td>
+                        <td><span class="cell green">2.27</span></td>
+                        <td><span class="cell green">3.12</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td>-</td>
+                    </tr>
+                    <tr data-fecha="2026-07-29" data-alerta="1">
+                        <td>29/07/2026</td>
+                        <td><span class="cell green">3.34</span></td>
+                        <td><span class="cell green">2.88</span></td>
+                        <td><span class="cell green">2.24</span></td>
+                        <td><span class="cell green">1.56</span></td>
+                        <td><span class="cell green">1.21</span></td>
+                        <td><span class="cell green">1.44</span></td>
+                        <td><span class="cell green">2.25</span></td>
+                        <td><span class="cell green">3.09</span></td>
+                        <td><span class="cell red">3.82</span></td>
+                        <td><span class="alert-badge">16:00 - 17:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-30" data-alerta="1">
+                        <td>30/07/2026</td>
+                        <td><span class="cell red">3.71</span></td>
+                        <td><span class="cell green">3.37</span></td>
+                        <td><span class="cell green">2.75</span></td>
+                        <td><span class="cell green">1.97</span></td>
+                        <td><span class="cell green">1.33</span></td>
+                        <td><span class="cell green">1.07</span></td>
+                        <td><span class="cell green">1.44</span></td>
+                        <td><span class="cell green">2.17</span></td>
+                        <td><span class="cell green">3.01</span></td>
+                        <td><span class="alert-badge">08:00 - 09:00</span></td>
+                    </tr>
+                    <tr data-fecha="2026-07-31" data-alerta="0">
+                        <td>31/07/2026</td>
+                        <td><span class="cell green">3.40</span></td>
+                        <td><span class="cell green">3.23</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td><span class="cell no-data">S/D</span></td>
+                        <td>-</td>
                     </tr>
 
                 </tbody>
@@ -314,7 +717,7 @@
         </div>
         
         <div class="footer">
-            <p>Generado automáticamente el 31/07/2026 a las 10:43</p>
+            <p>Generado automáticamente el 31/07/2026 a las 13:54</p>
             <p>Datos fuente: Servicio de Hidrografía Naval (SHN) de Argentina</p>
         </div>
     </div>
