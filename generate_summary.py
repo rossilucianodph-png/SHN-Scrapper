@@ -69,29 +69,36 @@ def _interp_color(c1, c2, t):
     return "#{:02x}{:02x}{:02x}".format(r, g, b)
 
 # Paletas de color
-RED_LIGHT = (254, 215, 215)   # #fed7d7
-RED_DARK = (155, 44, 44)      # #9b2c2c
-RED_TEXT_LIGHT = (155, 44, 44)
-GREEN_LIGHT = (198, 246, 213) # #c6f6d5
-GREEN_DARK = (47, 133, 90)    # #2f855a
-GREEN_TEXT_LIGHT = (34, 84, 61)
-BADGE_GREEN = (72, 187, 120)  # #48bb78
-BADGE_RED = (229, 62, 62)     # #e53e3e
+RED_LIGHT = (255, 153, 153)   # #ff9999 - rojo claro (cerca de 3.50)
+RED_DARK = (255, 0, 0)        # #ff0000 - rojo puro (valor máximo)
+GREEN_HIGH = (139, 195, 74)   # #8bc34a - verde claro vivo (cerca de 3.50)
+GREEN_LOW = (51, 80, 47)      # #33502f - verde oscuro apagado (niveles bajos)
+BADGE_SCALE = [
+    (0, 200, 83),    # 1 hora  -> verde #00c853
+    (174, 234, 0),   # 2 horas -> lima #aeea00
+    (255, 235, 59),  # 3 horas -> amarillo #ffeb3b
+    (255, 152, 0),   # 4 horas -> naranja #ff9800
+    (255, 0, 0),     # 5+ horas -> rojo #ff0000
+]
+
+def _to_hex(color):
+    """Convierte una tupla (r,g,b) a string hex '#rrggbb'."""
+    return "#{:02x}{:02x}{:02x}".format(color[0], color[1], color[2])
 
 def cell_colors(valor):
-    """Devuelve (fondo, texto) para una celda según su valor de nivel.
-    Más lejos de 3.50m = color más intenso (verde o rojo)."""
+    """Devuelve el color de fondo para una celda según su valor de nivel.
+    La escala destaca más cuanto más grande es el valor."""
     if valor <= THRESHOLD:
         t = min((THRESHOLD - valor) / GREEN_RANGE, 1.0)
-        return _interp_color(GREEN_LIGHT, GREEN_DARK, t), _interp_color(GREEN_TEXT_LIGHT, "#ffffff", t)
+        return _interp_color(GREEN_HIGH, GREEN_LOW, t)
     t = min((valor - THRESHOLD) / RED_RANGE, 1.0)
-    return _interp_color(RED_LIGHT, RED_DARK, t), _interp_color(RED_TEXT_LIGHT, "#ffffff", t)
+    return _interp_color(RED_LIGHT, RED_DARK, t)
 
 def badge_colors(horas):
-    """Devuelve (fondo, texto) del rango de alerta según cantidad de horas.
-    1 hora = verde, 5 o más = rojo, valores intermedios en el medio."""
-    t = min(max((horas - 1) / 4.0, 0.0), 1.0)
-    return _interp_color(BADGE_GREEN, BADGE_RED, t), "#ffffff"
+    """Devuelve el color del rango de alerta según cantidad de horas.
+    Escala verde -> amarillo -> rojo (1 hora = verde, 5 o más = rojo)."""
+    idx = min(max(horas - 1, 0), len(BADGE_SCALE) - 1)
+    return _to_hex(BADGE_SCALE[idx])
 
 def filter_hours(df):
     """Filtra registros entre HOUR_START y HOUR_END"""
@@ -146,8 +153,8 @@ def generate_html(day_results):
     hours_range = list(range(HOUR_START, HOUR_END + 1))
     
     if day_results:
-        fecha_min = day_results[0]["fecha"]
         fecha_max = day_results[-1]["fecha"]
+        fecha_min = (pd.Timestamp(fecha_max) - pd.Timedelta(days=14)).strftime("%Y-%m-%d")
     else:
         fecha_min = ""
         fecha_max = ""
@@ -221,13 +228,13 @@ def generate_html(day_results):
             background: #f56565;
         }
         .legend-color.gradient-red {
-            background: linear-gradient(90deg, #fed7d7, #9b2c2c);
+            background: linear-gradient(90deg, #ff9999, #ff0000);
         }
         .legend-color.gradient-green {
-            background: linear-gradient(90deg, #c6f6d5, #2f855a);
+            background: linear-gradient(90deg, #33502f, #8bc34a);
         }
         .legend-color.gradient-hours {
-            background: linear-gradient(90deg, #48bb78, #e53e3e);
+            background: linear-gradient(90deg, #00c853, #aeea00, #ffeb3b, #ff9800, #ff0000);
         }
         .table-container {
             padding: 20px;
@@ -284,18 +291,70 @@ def generate_html(day_results):
             font-weight: 600;
             min-width: 60px;
             text-align: center;
+            color: #000000;
+            text-shadow: -1px 0 1px #ffffff, 1px 0 1px #ffffff, 0 -1px 1px #ffffff, 0 1px 1px #ffffff, 0 0 2px #ffffff, 0 0 2px #ffffff;
         }
         .cell.no-data {
             background: #e2e8f0;
             color: #a0aec0;
+            text-shadow: none;
         }
         .badge {
             display: inline-block;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
+            color: #000000;
+            text-shadow: -1px 0 1px #ffffff, 1px 0 1px #ffffff, 0 -1px 1px #ffffff, 0 1px 1px #ffffff, 0 0 2px #ffffff, 0 0 2px #ffffff;
+        }
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 16px;
+            background: #1a365d;
+            border-bottom: 1px solid #2c5282;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
             color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+        }
+        .btn-pdf {
+            background: linear-gradient(135deg, #e53e3e, #9b2c2c);
+        }
+        .btn-excel {
+            background: linear-gradient(135deg, #38a169, #276749);
+        }
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: none;
+            }
+            .no-print, .filter-panel {
+                display: none !important;
+            }
+            .header, .legend, .stats, .cell, .badge {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
         .footer {
             padding: 20px;
@@ -384,26 +443,23 @@ def generate_html(day_results):
             <p>Monitoreo de niveles entre 08:00 y 16:00 hs | Umbral de alerta: 3.50m</p>
         </div>
         
+        <div class="action-bar no-print">
+            <button class="btn btn-pdf" onclick="window.print()">Imprimir / PDF</button>
+            <button class="btn btn-excel" onclick="exportarExcel()">Exportar a Excel</button>
+        </div>
+        
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-color green"></div>
-                <span>Nivel ≤ 3.50m (Normal)</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color red"></div>
-                <span>Nivel > 3.50m (Alerta)</span>
-            </div>
-            <div class="legend-item">
                 <div class="legend-color gradient-green"></div>
-                <span>Verde: pálido (cerca de 3.50) → oscuro (nivel bajo)</span>
+                <span>Verde: bajo → intenso (cerca de 3.50)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color gradient-red"></div>
-                <span>Rojo: pálido (cerca de 3.50) → oscuro (nivel alto)</span>
+                <span>Rojo: claro (cerca de 3.50) → puro (nivel alto)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color gradient-hours"></div>
-                <span>Rango alerta: verde (1 hora) → rojo (5+ horas)</span>
+                <span>Rango alerta: verde (1 h) → amarillo → rojo (5+ h)</span>
             </div>
         </div>
 """
@@ -473,16 +529,16 @@ def generate_html(day_results):
             if h in day["hours"]:
                 info = day["hours"][h]
                 if info["valor"] is not None:
-                    bg, txt = cell_colors(info["valor"])
-                    html += f'                        <td><span class="cell" style="background:{bg};color:{txt};">{info["valor"]:.2f}</span></td>\n'
+                    bg = cell_colors(info["valor"])
+                    html += f'                        <td><span class="cell" style="background:{bg};">{info["valor"]:.2f}</span></td>\n'
                 else:
                     html += '                        <td><span class="cell no-data">S/D</span></td>\n'
             else:
                 html += '                        <td><span class="cell no-data">-</span></td>\n'
         
         if day["tiene_alerta"]:
-            bg, txt = badge_colors(day["horas_alerta"])
-            html += f'                        <td><span class="badge" style="background:{bg};color:{txt};">{day["alerta_inicio"]} - {day["alerta_fin"]}</span></td>\n'
+            bg = badge_colors(day["horas_alerta"])
+            html += f'                        <td><span class="badge" style="background:{bg};">{day["alerta_inicio"]} - {day["alerta_fin"]}</span></td>\n'
         else:
             html += '                        <td>-</td>\n'
         
@@ -543,6 +599,24 @@ def generate_html(day_results):
                 });
 
                 actualizarStats();
+            }
+
+            function exportarExcel() {
+                const tabla = document.getElementById('tabla-resumen');
+                const clon = tabla.cloneNode(true);
+                clon.querySelectorAll('tbody tr').forEach(function(fila) {
+                    if (fila.style.display === 'none') {
+                        fila.remove();
+                    }
+                });
+                const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
+                const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'resumen_puerto_belgrano.xls';
+                a.click();
+                URL.revokeObjectURL(url);
             }
 
             toggle.addEventListener('change', aplicarFiltro);
