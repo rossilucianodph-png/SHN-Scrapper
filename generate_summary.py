@@ -71,8 +71,8 @@ def _interp_color(c1, c2, t):
 # Paletas de color
 RED_LIGHT = (255, 153, 153)   # #ff9999 - rojo claro (cerca de 3.50)
 RED_DARK = (255, 0, 0)        # #ff0000 - rojo puro (valor máximo)
-GREEN_HIGH = (139, 195, 74)   # #8bc34a - verde claro vivo (cerca de 3.50)
-GREEN_LOW = (51, 80, 47)      # #33502f - verde oscuro apagado (niveles bajos)
+GREEN_HIGH = (139, 195, 74)   # #8bc34a - verde claro (cerca de 3.50)
+GREEN_LOW = (232, 246, 237)   # #e8f6ed - verde muy pálido (niveles bajos)
 BADGE_SCALE = [
     (0, 200, 83),    # 1 hora  -> verde #00c853
     (174, 234, 0),   # 2 horas -> lima #aeea00
@@ -231,7 +231,7 @@ def generate_html(day_results):
             background: linear-gradient(90deg, #ff9999, #ff0000);
         }
         .legend-color.gradient-green {
-            background: linear-gradient(90deg, #33502f, #8bc34a);
+            background: linear-gradient(90deg, #e8f6ed, #8bc34a);
         }
         .legend-color.gradient-hours {
             background: linear-gradient(90deg, #00c853, #aeea00, #ffeb3b, #ff9800, #ff0000);
@@ -444,14 +444,14 @@ def generate_html(day_results):
         </div>
         
         <div class="action-bar no-print">
-            <button class="btn btn-pdf" onclick="window.print()">Imprimir / PDF</button>
+            <button class="btn btn-pdf" onclick="guardarPDF()">Guardar como PDF</button>
             <button class="btn btn-excel" onclick="exportarExcel()">Exportar a Excel</button>
         </div>
         
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color gradient-green"></div>
-                <span>Verde: bajo → intenso (cerca de 3.50)</span>
+                <span>Verde: pálido (nivel bajo) → claro vivo (cerca de 3.50)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color gradient-red"></div>
@@ -601,30 +601,138 @@ def generate_html(day_results):
                 actualizarStats();
             }
 
-            function exportarExcel() {
-                const tabla = document.getElementById('tabla-resumen');
-                const clon = tabla.cloneNode(true);
-                clon.querySelectorAll('tbody tr').forEach(function(fila) {
-                    if (fila.style.display === 'none') {
-                        fila.remove();
-                    }
-                });
-                const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
-                const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'resumen_puerto_belgrano.xls';
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-
             toggle.addEventListener('change', aplicarFiltro);
             inicio.addEventListener('change', aplicarFiltro);
             fin.addEventListener('change', aplicarFiltro);
 
             aplicarFiltro();
         })();
+
+        function descargaAutomatica(blob, nombre) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = nombre;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function guardarConDialogo(blob, nombre, mime, ext) {
+            if (window.showSaveFilePicker) {
+                try {
+                    var tipos = [{ description: 'Documento', accept: {} }];
+                    tipos[0].accept[mime] = ext;
+                    var handle = await window.showSaveFilePicker({ suggestedName: nombre, types: tipos });
+                    var writable = await handle.createWritable();
+                    await writable.write(blob);
+                    await writable.close();
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return;
+                }
+            }
+            descargaAutomatica(blob, nombre);
+        }
+
+        function exportarExcel() {
+            const tabla = document.getElementById('tabla-resumen');
+            const clon = tabla.cloneNode(true);
+            clon.querySelectorAll('tbody tr').forEach(function(fila) {
+                if (fila.style.display === 'none') fila.remove();
+            });
+            const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
+            const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
+            guardarConDialogo(blob, 'resumen_puerto_belgrano.xls', 'application/vnd.ms-excel', ['.xls']);
+        }
+
+        function guardarPDF() {
+            const filas = Array.from(document.querySelectorAll('#tabla-resumen tbody tr')).filter(function(f) { return f.style.display !== 'none'; });
+            const encabezados = Array.from(document.querySelectorAll('#tabla-resumen thead th')).map(function(t) { return t.textContent.trim(); });
+
+            const M = 20, W = 595, H = 842;
+            const RH = 18, HH = 22;
+            const CW = [85, 40, 40, 40, 40, 40, 40, 40, 40, 40, 100];
+            const tableW = CW.reduce(function(a, b) { return a + b; }, 0);
+            const xStart = M;
+            const yTop = H - M - HH;
+            const rowsPerPage = Math.max(1, Math.floor((H - 2 * M - HH) / RH));
+            const totalRows = filas.length;
+            const totalPages = Math.max(1, Math.ceil(totalRows / rowsPerPage));
+
+            function rgb(cssBg) {
+                const m = /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(cssBg || '');
+                return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : null;
+            }
+            function esc(t) { return String(t).replace(/\\\\/g, '\\\\\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)'); }
+            function num(n) { return n.toFixed(3); }
+
+            const streams = [];
+            for (let p = 0; p < totalPages; p++) {
+                const L = [];
+                L.push('q');
+                L.push(num(44 / 255) + ' ' + num(55 / 255) + ' ' + num(72 / 255) + ' rg ' + xStart + ' ' + yTop + ' ' + tableW + ' ' + HH + ' re f');
+                let cx = xStart;
+                for (let i = 0; i < encabezados.length; i++) {
+                    const hw = CW[i];
+                    L.push('BT /F1 9 Tf 1 1 1 rg ' + num(cx + hw / 2 - encabezados[i].length * 2.2) + ' ' + num(yTop + HH / 2 - 3.2) + ' Td (' + esc(encabezados[i]) + ') Tj ET');
+                    cx += hw;
+                }
+                const inicio = p * rowsPerPage;
+                const fin = Math.min(inicio + rowsPerPage, totalRows);
+                for (let r = inicio; r < fin; r++) {
+                    const y = yTop - (r - inicio + 1) * RH;
+                    const celdas = filas[r].cells;
+                    let x = xStart;
+                    for (let j = 0; j < celdas.length; j++) {
+                        const cw = CW[j] || 40;
+                        const span = celdas[j].querySelector('span');
+                        const txt = celdas[j].textContent.trim();
+                        if (span && span.style && span.style.background) {
+                            const c = rgb(span.style.background);
+                            if (c) {
+                                L.push(num(c[0]) + ' ' + num(c[1]) + ' ' + num(c[2]) + ' rg ' + x + ' ' + y + ' ' + cw + ' ' + RH + ' re f');
+                            }
+                            L.push('BT /F1 7.5 Tf 0 0 0 rg 1 1 1 RG 0.3 w 2 Tr ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj 0 Tr ET');
+                        } else if (span && span.classList.contains('no-data')) {
+                            L.push('BT /F1 7.5 Tf 0.62 0.67 0.71 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
+                        } else {
+                            L.push('BT /F1 7.5 Tf 0.18 0.24 0.33 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
+                        }
+                        x += cw;
+                    }
+                }
+                L.push('Q');
+                streams.push(L.join('\\n'));
+            }
+
+            const objs = [];
+            objs.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+            objs.push('<< /Type /Catalog /Pages 3 0 R >>');
+            const kids = [];
+            for (let k = 0; k < totalPages; k++) kids.push(String(4 + k * 2));
+            objs.push('<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + totalPages + ' >>');
+            for (let q = 0; q < totalPages; q++) {
+                objs.push('<< /Type /Page /Parent 3 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Contents ' + (5 + q * 2) + ' 0 R /Resources << /Font << /F1 1 0 R >> >> >>');
+                const data = streams[q];
+                objs.push('<< /Length ' + data.length + ' >>\\nstream\\n' + data + '\\nendstream');
+            }
+
+            let pdf = '%PDF-1.4\\n';
+            const offsets = [];
+            for (let oi = 0; oi < objs.length; oi++) {
+                offsets.push(pdf.length);
+                pdf += (oi + 1) + ' 0 obj\\n' + objs[oi] + '\\nendobj\\n';
+            }
+            const xrefPos = pdf.length;
+            pdf += 'xref\\n0 ' + (objs.length + 1) + '\\n0000000000 65535 f \\n';
+            for (let oi = 0; oi < objs.length; oi++) {
+                pdf += String(offsets[oi]).padStart(10, '0') + ' 00000 n \\n';
+            }
+            pdf += 'trailer\\n<< /Size ' + (objs.length + 1) + ' /Root 2 0 R >>\\nstartxref\\n' + xrefPos + '\\n%%EOF';
+
+            const blob = new Blob([pdf], { type: 'application/pdf' });
+            guardarConDialogo(blob, 'resumen_puerto_belgrano.pdf', 'application/pdf', ['.pdf']);
+        }
     </script>
 </body>
 </html>
