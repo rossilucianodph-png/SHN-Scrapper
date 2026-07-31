@@ -70,7 +70,7 @@
             background: linear-gradient(90deg, #ff9999, #ff0000);
         }
         .legend-color.gradient-green {
-            background: linear-gradient(90deg, #33502f, #8bc34a);
+            background: linear-gradient(90deg, #e8f6ed, #8bc34a);
         }
         .legend-color.gradient-hours {
             background: linear-gradient(90deg, #00c853, #aeea00, #ffeb3b, #ff9800, #ff0000);
@@ -283,14 +283,14 @@
         </div>
         
         <div class="action-bar no-print">
-            <button class="btn btn-pdf" onclick="window.print()">Imprimir / PDF</button>
+            <button class="btn btn-pdf" onclick="guardarPDF()">Guardar como PDF</button>
             <button class="btn btn-excel" onclick="exportarExcel()">Exportar a Excel</button>
         </div>
         
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color gradient-green"></div>
-                <span>Verde: bajo → intenso (cerca de 3.50)</span>
+                <span>Verde: pálido (nivel bajo) → claro vivo (cerca de 3.50)</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color gradient-red"></div>
@@ -354,14 +354,14 @@
                 <tbody>
                     <tr data-fecha="2026-06-30" data-alerta="1">
                         <td>30/06/2026</td>
-                        <td><span class="cell" style="background:#83b847;">3.26</span></td>
-                        <td><span class="cell" style="background:#74a543;">2.85</span></td>
-                        <td><span class="cell" style="background:#5a833b;">2.11</span></td>
-                        <td><span class="cell" style="background:#436534;">1.46</span></td>
-                        <td><span class="cell" style="background:#385631;">1.14</span></td>
-                        <td><span class="cell" style="background:#3f5f33;">1.33</span></td>
-                        <td><span class="cell" style="background:#547b39;">1.94</span></td>
-                        <td><span class="cell" style="background:#77a844;">2.92</span></td>
+                        <td><span class="cell" style="background:#94c85a;">3.26</span></td>
+                        <td><span class="cell" style="background:#a3d074;">2.85</span></td>
+                        <td><span class="cell" style="background:#bfdfa5;">2.11</span></td>
+                        <td><span class="cell" style="background:#d7edcf;">1.46</span></td>
+                        <td><span class="cell" style="background:#e3f3e4;">1.14</span></td>
+                        <td><span class="cell" style="background:#dcefd7;">1.33</span></td>
+                        <td><span class="cell" style="background:#c5e3b0;">1.94</span></td>
+                        <td><span class="cell" style="background:#a1cf70;">2.92</span></td>
                         <td><span class="cell" style="background:#ff8181;">3.81</span></td>
                         <td><span class="badge" style="background:#00c853;">16:00 - 17:00</span></td>
                     </tr>
@@ -371,10 +371,10 @@
                         <td><span class="cell" style="background:#ff3636;">4.79</span></td>
                         <td><span class="cell" style="background:#ff5a5a;">4.33</span></td>
                         <td><span class="cell" style="background:#ff8686;">3.75</span></td>
-                        <td><span class="cell" style="background:#7cb045;">3.08</span></td>
-                        <td><span class="cell" style="background:#66933f;">2.46</span></td>
-                        <td><span class="cell" style="background:#638f3e;">2.36</span></td>
-                        <td><span class="cell" style="background:#78aa44;">2.95</span></td>
+                        <td><span class="cell" style="background:#9bcc65;">3.08</span></td>
+                        <td><span class="cell" style="background:#b2d88e;">2.46</span></td>
+                        <td><span class="cell" style="background:#b5da94;">2.36</span></td>
+                        <td><span class="cell" style="background:#9fce6e;">2.95</span></td>
                         <td><span class="cell" style="background:#ff8787;">3.74</span></td>
                         <td><span class="badge" style="background:#ff0000;">08:00 - 17:00</span></td>
                     </tr>
@@ -382,13 +382,13 @@
                         <td>02/07/2026</td>
                         <td><span class="cell" style="background:#ff8484;">3.77</span></td>
                         <td><span class="cell" style="background:#ff9797;">3.53</span></td>
-                        <td><span class="cell" style="background:#7caf45;">3.07</span></td>
-                        <td><span class="cell" style="background:#618c3d;">2.30</span></td>
-                        <td><span class="cell" style="background:#436534;">1.45</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.84</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.82</span></td>
-                        <td><span class="cell" style="background:#426434;">1.44</span></td>
-                        <td><span class="cell" style="background:#638f3e;">2.37</span></td>
+                        <td><span class="cell" style="background:#9bcc66;">3.07</span></td>
+                        <td><span class="cell" style="background:#b8db98;">2.30</span></td>
+                        <td><span class="cell" style="background:#d7edd0;">1.45</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.84</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.82</span></td>
+                        <td><span class="cell" style="background:#d8edd0;">1.44</span></td>
+                        <td><span class="cell" style="background:#b5da94;">2.37</span></td>
                         <td><span class="badge" style="background:#aeea00;">08:00 - 10:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-03" data-alerta="1">
@@ -396,12 +396,12 @@
                         <td><span class="cell" style="background:#ff7d7d;">3.86</span></td>
                         <td><span class="cell" style="background:#ff7f7f;">3.84</span></td>
                         <td><span class="cell" style="background:#ff9797;">3.52</span></td>
-                        <td><span class="cell" style="background:#7aad45;">3.03</span></td>
-                        <td><span class="cell" style="background:#5e883c;">2.21</span></td>
-                        <td><span class="cell" style="background:#3f5f33;">1.33</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.74</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.87</span></td>
-                        <td><span class="cell" style="background:#4b6f36;">1.67</span></td>
+                        <td><span class="cell" style="background:#9ccd69;">3.03</span></td>
+                        <td><span class="cell" style="background:#bbdd9e;">2.21</span></td>
+                        <td><span class="cell" style="background:#dcefd7;">1.33</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.74</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.87</span></td>
+                        <td><span class="cell" style="background:#cfe8c1;">1.67</span></td>
                         <td><span class="badge" style="background:#ffeb3b;">08:00 - 11:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-04" data-alerta="1">
@@ -409,12 +409,12 @@
                         <td><span class="cell" style="background:#ff8787;">3.73</span></td>
                         <td><span class="cell" style="background:#ff7a7a;">3.91</span></td>
                         <td><span class="cell" style="background:#ff8181;">3.81</span></td>
-                        <td><span class="cell" style="background:#86bd49;">3.37</span></td>
-                        <td><span class="cell" style="background:#72a342;">2.80</span></td>
-                        <td><span class="cell" style="background:#577e3a;">2.01</span></td>
-                        <td><span class="cell" style="background:#3a5931;">1.20</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.78</span></td>
-                        <td><span class="cell" style="background:#355330;">1.07</span></td>
+                        <td><span class="cell" style="background:#90c652;">3.37</span></td>
+                        <td><span class="cell" style="background:#a5d178;">2.80</span></td>
+                        <td><span class="cell" style="background:#c2e1ab;">2.01</span></td>
+                        <td><span class="cell" style="background:#e1f2e0;">1.20</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.78</span></td>
+                        <td><span class="cell" style="background:#e5f5e8;">1.07</span></td>
                         <td><span class="badge" style="background:#ffeb3b;">08:00 - 11:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-05" data-alerta="1">
@@ -423,84 +423,84 @@
                         <td><span class="cell" style="background:#ff8181;">3.82</span></td>
                         <td><span class="cell" style="background:#ff7d7d;">3.86</span></td>
                         <td><span class="cell" style="background:#ff8e8e;">3.65</span></td>
-                        <td><span class="cell" style="background:#7eb246;">3.13</span></td>
-                        <td><span class="cell" style="background:#648f3e;">2.38</span></td>
-                        <td><span class="cell" style="background:#436534;">1.46</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.86</span></td>
-                        <td><span class="cell" style="background:#3c5c32;">1.25</span></td>
+                        <td><span class="cell" style="background:#99cb62;">3.13</span></td>
+                        <td><span class="cell" style="background:#b5da93;">2.38</span></td>
+                        <td><span class="cell" style="background:#d7edcf;">1.46</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.86</span></td>
+                        <td><span class="cell" style="background:#dff1dd;">1.25</span></td>
                         <td><span class="badge" style="background:#ff9800;">08:00 - 12:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-06" data-alerta="1">
                         <td>06/07/2026</td>
-                        <td><span class="cell" style="background:#80b447;">3.18</span></td>
+                        <td><span class="cell" style="background:#97ca5f;">3.18</span></td>
                         <td><span class="cell" style="background:#ff8787;">3.74</span></td>
                         <td><span class="cell" style="background:#ff7a7a;">3.90</span></td>
                         <td><span class="cell" style="background:#ff8484;">3.77</span></td>
-                        <td><span class="cell" style="background:#88bf49;">3.41</span></td>
-                        <td><span class="cell" style="background:#71a142;">2.76</span></td>
-                        <td><span class="cell" style="background:#527838;">1.87</span></td>
-                        <td><span class="cell" style="background:#34522f;">1.04</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.55</span></td>
+                        <td><span class="cell" style="background:#8ec550;">3.41</span></td>
+                        <td><span class="cell" style="background:#a7d27a;">2.76</span></td>
+                        <td><span class="cell" style="background:#c8e4b4;">1.87</span></td>
+                        <td><span class="cell" style="background:#e7f5ea;">1.04</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.55</span></td>
                         <td><span class="badge" style="background:#ffeb3b;">09:00 - 12:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-07" data-alerta="1">
                         <td>07/07/2026</td>
-                        <td><span class="cell" style="background:#5e883c;">2.21</span></td>
-                        <td><span class="cell" style="background:#7cb045;">3.08</span></td>
+                        <td><span class="cell" style="background:#bbdd9e;">2.21</span></td>
+                        <td><span class="cell" style="background:#9bcc65;">3.08</span></td>
                         <td><span class="cell" style="background:#ff9898;">3.51</span></td>
                         <td><span class="cell" style="background:#ff9898;">3.51</span></td>
-                        <td><span class="cell" style="background:#83b847;">3.26</span></td>
-                        <td><span class="cell" style="background:#71a142;">2.76</span></td>
-                        <td><span class="cell" style="background:#4d7237;">1.75</span></td>
-                        <td><span class="cell" style="background:#3b5b32;">1.24</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.67</span></td>
+                        <td><span class="cell" style="background:#94c85a;">3.26</span></td>
+                        <td><span class="cell" style="background:#a7d27a;">2.76</span></td>
+                        <td><span class="cell" style="background:#cce7bc;">1.75</span></td>
+                        <td><span class="cell" style="background:#dff1dd;">1.24</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.67</span></td>
                         <td><span class="badge" style="background:#aeea00;">10:00 - 12:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-08" data-alerta="1">
                         <td>08/07/2026</td>
-                        <td><span class="cell" style="background:#71a142;">2.77</span></td>
+                        <td><span class="cell" style="background:#a6d27a;">2.77</span></td>
                         <td><span class="cell" style="background:#ff9191;">3.60</span></td>
                         <td><span class="cell" style="background:#ff7070;">4.03</span></td>
                         <td><span class="cell" style="background:#ff6161;">4.23</span></td>
                         <td><span class="cell" style="background:#ff6060;">4.24</span></td>
                         <td><span class="cell" style="background:#ff7676;">3.96</span></td>
-                        <td><span class="cell" style="background:#89c149;">3.45</span></td>
-                        <td><span class="cell" style="background:#71a142;">2.76</span></td>
-                        <td><span class="cell" style="background:#537939;">1.90</span></td>
+                        <td><span class="cell" style="background:#8dc44d;">3.45</span></td>
+                        <td><span class="cell" style="background:#a7d27a;">2.76</span></td>
+                        <td><span class="cell" style="background:#c7e4b2;">1.90</span></td>
                         <td><span class="badge" style="background:#ff0000;">09:00 - 14:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-09" data-alerta="1">
                         <td>09/07/2026</td>
-                        <td><span class="cell" style="background:#5d873c;">2.19</span></td>
-                        <td><span class="cell" style="background:#82b747;">3.24</span></td>
+                        <td><span class="cell" style="background:#bcde9f;">2.19</span></td>
+                        <td><span class="cell" style="background:#95c85b;">3.24</span></td>
                         <td><span class="cell" style="background:#ff7777;">3.94</span></td>
                         <td><span class="cell" style="background:#ff6060;">4.25</span></td>
                         <td><span class="cell" style="background:#ff5656;">4.38</span></td>
                         <td><span class="cell" style="background:#ff5f5f;">4.26</span></td>
                         <td><span class="cell" style="background:#ff7b7b;">3.89</span></td>
-                        <td><span class="cell" style="background:#83b948;">3.28</span></td>
-                        <td><span class="cell" style="background:#66933f;">2.45</span></td>
+                        <td><span class="cell" style="background:#93c758;">3.28</span></td>
+                        <td><span class="cell" style="background:#b2d88e;">2.45</span></td>
                         <td><span class="badge" style="background:#ff0000;">10:00 - 15:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-10" data-alerta="1">
                         <td>10/07/2026</td>
-                        <td><span class="cell" style="background:#416333;">1.41</span></td>
-                        <td><span class="cell" style="background:#648f3e;">2.38</span></td>
-                        <td><span class="cell" style="background:#85bb48;">3.33</span></td>
+                        <td><span class="cell" style="background:#d9eed2;">1.41</span></td>
+                        <td><span class="cell" style="background:#b5da93;">2.38</span></td>
+                        <td><span class="cell" style="background:#91c655;">3.33</span></td>
                         <td><span class="cell" style="background:#ff7979;">3.92</span></td>
                         <td><span class="cell" style="background:#ff6868;">4.14</span></td>
                         <td><span class="cell" style="background:#ff6161;">4.23</span></td>
                         <td><span class="cell" style="background:#ff6a6a;">4.11</span></td>
                         <td><span class="cell" style="background:#ff8484;">3.77</span></td>
-                        <td><span class="cell" style="background:#7eb246;">3.14</span></td>
+                        <td><span class="cell" style="background:#98ca61;">3.14</span></td>
                         <td><span class="badge" style="background:#ff0000;">11:00 - 16:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-11" data-alerta="1">
                         <td>11/07/2026</td>
-                        <td><span class="cell" style="background:#33502f;">0.83</span></td>
-                        <td><span class="cell" style="background:#486c35;">1.60</span></td>
-                        <td><span class="cell" style="background:#65923e;">2.43</span></td>
-                        <td><span class="cell" style="background:#80b447;">3.18</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.83</span></td>
+                        <td><span class="cell" style="background:#d2eac6;">1.60</span></td>
+                        <td><span class="cell" style="background:#b3d990;">2.43</span></td>
+                        <td><span class="cell" style="background:#97ca5f;">3.18</span></td>
                         <td><span class="cell" style="background:#ff8585;">3.76</span></td>
                         <td><span class="cell" style="background:#ff7272;">4.01</span></td>
                         <td><span class="cell" style="background:#ff6b6b;">4.10</span></td>
@@ -510,11 +510,11 @@
                     </tr>
                     <tr data-fecha="2026-07-12" data-alerta="1">
                         <td>12/07/2026</td>
-                        <td><span class="cell" style="background:#33502f;">0.70</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.83</span></td>
-                        <td><span class="cell" style="background:#446734;">1.49</span></td>
-                        <td><span class="cell" style="background:#5e883c;">2.21</span></td>
-                        <td><span class="cell" style="background:#77a944;">2.94</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.70</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.83</span></td>
+                        <td><span class="cell" style="background:#d6eccd;">1.49</span></td>
+                        <td><span class="cell" style="background:#bbdd9e;">2.21</span></td>
+                        <td><span class="cell" style="background:#a0ce6f;">2.94</span></td>
                         <td><span class="cell" style="background:#ff9797;">3.53</span></td>
                         <td><span class="cell" style="background:#ff7d7d;">3.86</span></td>
                         <td><span class="cell" style="background:#ff7474;">3.99</span></td>
@@ -523,53 +523,53 @@
                     </tr>
                     <tr data-fecha="2026-07-13" data-alerta="1">
                         <td>13/07/2026</td>
-                        <td><span class="cell" style="background:#385631;">1.14</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.75</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.81</span></td>
-                        <td><span class="cell" style="background:#416333;">1.41</span></td>
-                        <td><span class="cell" style="background:#527838;">1.87</span></td>
-                        <td><span class="cell" style="background:#638f3e;">2.37</span></td>
-                        <td><span class="cell" style="background:#79ac45;">3.00</span></td>
-                        <td><span class="cell" style="background:#8ac24a;">3.47</span></td>
+                        <td><span class="cell" style="background:#e3f3e4;">1.14</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.75</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.81</span></td>
+                        <td><span class="cell" style="background:#d9eed2;">1.41</span></td>
+                        <td><span class="cell" style="background:#c8e4b4;">1.87</span></td>
+                        <td><span class="cell" style="background:#b5da94;">2.37</span></td>
+                        <td><span class="cell" style="background:#9ecd6b;">3.00</span></td>
+                        <td><span class="cell" style="background:#8cc44c;">3.47</span></td>
                         <td><span class="cell" style="background:#ff9090;">3.62</span></td>
                         <td><span class="badge" style="background:#00c853;">16:00 - 17:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-14" data-alerta="1">
                         <td>14/07/2026</td>
-                        <td><span class="cell" style="background:#6a9840;">2.57</span></td>
-                        <td><span class="cell" style="background:#577e3a;">2.01</span></td>
-                        <td><span class="cell" style="background:#446634;">1.48</span></td>
-                        <td><span class="cell" style="background:#446634;">1.47</span></td>
-                        <td><span class="cell" style="background:#456734;">1.50</span></td>
-                        <td><span class="cell" style="background:#6c9b40;">2.62</span></td>
-                        <td><span class="cell" style="background:#81b747;">3.23</span></td>
+                        <td><span class="cell" style="background:#aed687;">2.57</span></td>
+                        <td><span class="cell" style="background:#c2e1ab;">2.01</span></td>
+                        <td><span class="cell" style="background:#d6ecce;">1.48</span></td>
+                        <td><span class="cell" style="background:#d7ecce;">1.47</span></td>
+                        <td><span class="cell" style="background:#d5eccc;">1.50</span></td>
+                        <td><span class="cell" style="background:#acd583;">2.62</span></td>
+                        <td><span class="cell" style="background:#95c95c;">3.23</span></td>
                         <td><span class="cell" style="background:#ff7f7f;">3.84</span></td>
                         <td><span class="cell" style="background:#ff6d6d;">4.07</span></td>
                         <td><span class="badge" style="background:#aeea00;">15:00 - 17:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-15" data-alerta="1">
                         <td>15/07/2026</td>
-                        <td><span class="cell" style="background:#7db046;">3.09</span></td>
-                        <td><span class="cell" style="background:#6c9b40;">2.62</span></td>
-                        <td><span class="cell" style="background:#517838;">1.86</span></td>
-                        <td><span class="cell" style="background:#3f6033;">1.35</span></td>
-                        <td><span class="cell" style="background:#3e5e32;">1.31</span></td>
-                        <td><span class="cell" style="background:#4f7438;">1.79</span></td>
-                        <td><span class="cell" style="background:#67943f;">2.48</span></td>
-                        <td><span class="cell" style="background:#83b847;">3.26</span></td>
+                        <td><span class="cell" style="background:#9acb65;">3.09</span></td>
+                        <td><span class="cell" style="background:#acd583;">2.62</span></td>
+                        <td><span class="cell" style="background:#c8e4b5;">1.86</span></td>
+                        <td><span class="cell" style="background:#dbefd6;">1.35</span></td>
+                        <td><span class="cell" style="background:#dcf0d9;">1.31</span></td>
+                        <td><span class="cell" style="background:#cbe6b9;">1.79</span></td>
+                        <td><span class="cell" style="background:#b1d88d;">2.48</span></td>
+                        <td><span class="cell" style="background:#94c85a;">3.26</span></td>
                         <td><span class="cell" style="background:#ff7c7c;">3.88</span></td>
                         <td><span class="badge" style="background:#00c853;">16:00 - 17:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-16" data-alerta="1">
                         <td>16/07/2026</td>
                         <td><span class="cell" style="background:#ff9696;">3.54</span></td>
-                        <td><span class="cell" style="background:#82b747;">3.24</span></td>
-                        <td><span class="cell" style="background:#6d9b41;">2.64</span></td>
-                        <td><span class="cell" style="background:#567e3a;">2.00</span></td>
-                        <td><span class="cell" style="background:#426334;">1.42</span></td>
-                        <td><span class="cell" style="background:#3f6033;">1.34</span></td>
-                        <td><span class="cell" style="background:#567e3a;">1.99</span></td>
-                        <td><span class="cell" style="background:#71a142;">2.77</span></td>
+                        <td><span class="cell" style="background:#95c85b;">3.24</span></td>
+                        <td><span class="cell" style="background:#abd582;">2.64</span></td>
+                        <td><span class="cell" style="background:#c3e2ac;">2.00</span></td>
+                        <td><span class="cell" style="background:#d8edd2;">1.42</span></td>
+                        <td><span class="cell" style="background:#dbefd7;">1.34</span></td>
+                        <td><span class="cell" style="background:#c3e2ac;">1.99</span></td>
+                        <td><span class="cell" style="background:#a6d27a;">2.77</span></td>
                         <td><span class="cell" style="background:#ff9191;">3.60</span></td>
                         <td><span class="badge" style="background:#aeea00;">08:00 - 17:00</span></td>
                     </tr>
@@ -592,11 +592,11 @@
                         <td><span class="cell" style="background:#ff5858;">4.35</span></td>
                         <td><span class="cell" style="background:#ff7070;">4.04</span></td>
                         <td><span class="cell" style="background:#ff8f8f;">3.63</span></td>
-                        <td><span class="cell" style="background:#78ab44;">2.97</span></td>
-                        <td><span class="cell" style="background:#5d873c;">2.19</span></td>
-                        <td><span class="cell" style="background:#476b35;">1.58</span></td>
-                        <td><span class="cell" style="background:#466935;">1.54</span></td>
-                        <td><span class="cell" style="background:#5f893c;">2.24</span></td>
+                        <td><span class="cell" style="background:#9fce6d;">2.97</span></td>
+                        <td><span class="cell" style="background:#bcde9f;">2.19</span></td>
+                        <td><span class="cell" style="background:#d2eac7;">1.58</span></td>
+                        <td><span class="cell" style="background:#d4ebca;">1.54</span></td>
+                        <td><span class="cell" style="background:#badd9c;">2.24</span></td>
                         <td><span class="badge" style="background:#ff9800;">08:00 - 12:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-19" data-alerta="1">
@@ -605,11 +605,11 @@
                         <td><span class="cell" style="background:#ff6f6f;">4.05</span></td>
                         <td><span class="cell" style="background:#ff7474;">3.99</span></td>
                         <td><span class="cell" style="background:#ff8585;">3.76</span></td>
-                        <td><span class="cell" style="background:#7fb346;">3.15</span></td>
-                        <td><span class="cell" style="background:#628e3d;">2.34</span></td>
-                        <td><span class="cell" style="background:#426434;">1.43</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.87</span></td>
-                        <td><span class="cell" style="background:#355330;">1.07</span></td>
+                        <td><span class="cell" style="background:#98ca61;">3.15</span></td>
+                        <td><span class="cell" style="background:#b6db96;">2.34</span></td>
+                        <td><span class="cell" style="background:#d8edd1;">1.43</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.87</span></td>
+                        <td><span class="cell" style="background:#e5f5e8;">1.07</span></td>
                         <td><span class="badge" style="background:#ff9800;">08:00 - 12:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-20" data-alerta="1">
@@ -619,71 +619,71 @@
                         <td><span class="cell" style="background:#ff6666;">4.17</span></td>
                         <td><span class="cell" style="background:#ff6d6d;">4.07</span></td>
                         <td><span class="cell" style="background:#ff8e8e;">3.65</span></td>
-                        <td><span class="cell" style="background:#7bae45;">3.04</span></td>
-                        <td><span class="cell" style="background:#5b843b;">2.14</span></td>
-                        <td><span class="cell" style="background:#3c5c32;">1.25</span></td>
-                        <td><span class="cell" style="background:#33502f;">0.72</span></td>
+                        <td><span class="cell" style="background:#9ccc68;">3.04</span></td>
+                        <td><span class="cell" style="background:#bedfa3;">2.14</span></td>
+                        <td><span class="cell" style="background:#dff1dd;">1.25</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.72</span></td>
                         <td><span class="badge" style="background:#ff0000;">08:00 - 13:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-21" data-alerta="1">
                         <td>21/07/2026</td>
-                        <td><span class="cell" style="background:#83b948;">3.28</span></td>
+                        <td><span class="cell" style="background:#93c758;">3.28</span></td>
                         <td><span class="cell" style="background:#ff6e6e;">4.06</span></td>
                         <td><span class="cell" style="background:#ff5a5a;">4.33</span></td>
                         <td><span class="cell" style="background:#ff5151;">4.44</span></td>
                         <td><span class="cell" style="background:#ff6363;">4.20</span></td>
                         <td><span class="cell" style="background:#ff8484;">3.78</span></td>
-                        <td><span class="cell" style="background:#7db146;">3.10</span></td>
-                        <td><span class="cell" style="background:#5f8a3d;">2.26</span></td>
-                        <td><span class="cell" style="background:#3e5e32;">1.31</span></td>
+                        <td><span class="cell" style="background:#9acb64;">3.10</span></td>
+                        <td><span class="cell" style="background:#b9dc9b;">2.26</span></td>
+                        <td><span class="cell" style="background:#dcf0d9;">1.31</span></td>
                         <td><span class="badge" style="background:#ff0000;">09:00 - 14:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-22" data-alerta="1">
                         <td>22/07/2026</td>
-                        <td><span class="cell" style="background:#638e3e;">2.35</span></td>
-                        <td><span class="cell" style="background:#87be49;">3.40</span></td>
+                        <td><span class="cell" style="background:#b6da95;">2.35</span></td>
+                        <td><span class="cell" style="background:#8fc551;">3.40</span></td>
                         <td><span class="cell" style="background:#ff7777;">3.94</span></td>
                         <td><span class="cell" style="background:#ff6666;">4.17</span></td>
                         <td><span class="cell" style="background:#ff6464;">4.19</span></td>
                         <td><span class="cell" style="background:#ff7575;">3.97</span></td>
-                        <td><span class="cell" style="background:#88bf49;">3.41</span></td>
-                        <td><span class="cell" style="background:#6c9b41;">2.63</span></td>
-                        <td><span class="cell" style="background:#4d7237;">1.75</span></td>
+                        <td><span class="cell" style="background:#8ec550;">3.41</span></td>
+                        <td><span class="cell" style="background:#abd583;">2.63</span></td>
+                        <td><span class="cell" style="background:#cce7bc;">1.75</span></td>
                         <td><span class="badge" style="background:#ff9800;">10:00 - 14:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-23" data-alerta="1">
                         <td>23/07/2026</td>
-                        <td><span class="cell" style="background:#3a5a31;">1.21</span></td>
-                        <td><span class="cell" style="background:#5a833b;">2.10</span></td>
-                        <td><span class="cell" style="background:#79ac45;">3.00</span></td>
+                        <td><span class="cell" style="background:#e0f2df;">1.21</span></td>
+                        <td><span class="cell" style="background:#bfe0a5;">2.10</span></td>
+                        <td><span class="cell" style="background:#9ecd6b;">3.00</span></td>
                         <td><span class="cell" style="background:#ff8e8e;">3.65</span></td>
                         <td><span class="cell" style="background:#ff7a7a;">3.91</span></td>
                         <td><span class="cell" style="background:#ff7d7d;">3.86</span></td>
                         <td><span class="cell" style="background:#ff9494;">3.56</span></td>
-                        <td><span class="cell" style="background:#78aa44;">2.96</span></td>
-                        <td><span class="cell" style="background:#5b853b;">2.15</span></td>
+                        <td><span class="cell" style="background:#9fce6d;">2.96</span></td>
+                        <td><span class="cell" style="background:#bddfa2;">2.15</span></td>
                         <td><span class="badge" style="background:#ff9800;">11:00 - 15:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-24" data-alerta="1">
                         <td>24/07/2026</td>
-                        <td><span class="cell" style="background:#33502f;">0.67</span></td>
-                        <td><span class="cell" style="background:#436534;">1.45</span></td>
-                        <td><span class="cell" style="background:#66933f;">2.45</span></td>
-                        <td><span class="cell" style="background:#81b647;">3.21</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.67</span></td>
+                        <td><span class="cell" style="background:#d7edd0;">1.45</span></td>
+                        <td><span class="cell" style="background:#b2d88e;">2.45</span></td>
+                        <td><span class="cell" style="background:#96c95d;">3.21</span></td>
                         <td><span class="cell" style="background:#ff8d8d;">3.66</span></td>
                         <td><span class="cell" style="background:#ff7b7b;">3.89</span></td>
                         <td><span class="cell" style="background:#ff7777;">3.94</span></td>
                         <td><span class="cell" style="background:#ff8d8d;">3.66</span></td>
-                        <td><span class="cell" style="background:#7eb246;">3.13</span></td>
+                        <td><span class="cell" style="background:#99cb62;">3.13</span></td>
                         <td><span class="badge" style="background:#ff9800;">12:00 - 16:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-25" data-alerta="1">
                         <td>25/07/2026</td>
-                        <td><span class="cell" style="background:#33502f;">0.65</span></td>
-                        <td><span class="cell" style="background:#375530;">1.10</span></td>
-                        <td><span class="cell" style="background:#537939;">1.90</span></td>
-                        <td><span class="cell" style="background:#6c9b41;">2.63</span></td>
-                        <td><span class="cell" style="background:#8ac24a;">3.47</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">0.65</span></td>
+                        <td><span class="cell" style="background:#e4f4e6;">1.10</span></td>
+                        <td><span class="cell" style="background:#c7e4b2;">1.90</span></td>
+                        <td><span class="cell" style="background:#abd583;">2.63</span></td>
+                        <td><span class="cell" style="background:#8cc44c;">3.47</span></td>
                         <td><span class="cell" style="background:#ff7d7d;">3.86</span></td>
                         <td><span class="cell" style="background:#ff6d6d;">4.07</span></td>
                         <td><span class="cell" style="background:#ff6e6e;">4.06</span></td>
@@ -692,11 +692,11 @@
                     </tr>
                     <tr data-fecha="2026-07-26" data-alerta="1">
                         <td>26/07/2026</td>
-                        <td><span class="cell" style="background:#436534;">1.45</span></td>
-                        <td><span class="cell" style="background:#3b5a31;">1.22</span></td>
-                        <td><span class="cell" style="background:#496d36;">1.62</span></td>
-                        <td><span class="cell" style="background:#638f3e;">2.36</span></td>
-                        <td><span class="cell" style="background:#7db146;">3.10</span></td>
+                        <td><span class="cell" style="background:#d7edd0;">1.45</span></td>
+                        <td><span class="cell" style="background:#e0f2df;">1.22</span></td>
+                        <td><span class="cell" style="background:#d1e9c5;">1.62</span></td>
+                        <td><span class="cell" style="background:#b5da94;">2.36</span></td>
+                        <td><span class="cell" style="background:#9acb64;">3.10</span></td>
                         <td><span class="cell" style="background:#ff8787;">3.73</span></td>
                         <td><span class="cell" style="background:#ff6c6c;">4.09</span></td>
                         <td><span class="cell" style="background:#ff5a5a;">4.33</span></td>
@@ -705,61 +705,61 @@
                     </tr>
                     <tr data-fecha="2026-07-27" data-alerta="1">
                         <td>27/07/2026</td>
-                        <td><span class="cell" style="background:#5a843b;">2.12</span></td>
-                        <td><span class="cell" style="background:#436534;">1.46</span></td>
-                        <td><span class="cell" style="background:#33502f;">1.00</span></td>
-                        <td><span class="cell" style="background:#395831;">1.17</span></td>
-                        <td><span class="cell" style="background:#517838;">1.86</span></td>
-                        <td><span class="cell" style="background:#6c9b40;">2.62</span></td>
-                        <td><span class="cell" style="background:#87be49;">3.39</span></td>
+                        <td><span class="cell" style="background:#bedfa4;">2.12</span></td>
+                        <td><span class="cell" style="background:#d7edcf;">1.46</span></td>
+                        <td><span class="cell" style="background:#e8f6ed;">1.00</span></td>
+                        <td><span class="cell" style="background:#e2f3e2;">1.17</span></td>
+                        <td><span class="cell" style="background:#c8e4b5;">1.86</span></td>
+                        <td><span class="cell" style="background:#acd583;">2.62</span></td>
+                        <td><span class="cell" style="background:#8fc551;">3.39</span></td>
                         <td><span class="cell" style="background:#ff7e7e;">3.85</span></td>
                         <td><span class="cell" style="background:#ff6e6e;">4.06</span></td>
                         <td><span class="badge" style="background:#aeea00;">15:00 - 17:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-28" data-alerta="0">
                         <td>28/07/2026</td>
-                        <td><span class="cell" style="background:#80b447;">3.18</span></td>
-                        <td><span class="cell" style="background:#6a9740;">2.55</span></td>
-                        <td><span class="cell" style="background:#537a39;">1.92</span></td>
-                        <td><span class="cell" style="background:#456835;">1.52</span></td>
-                        <td><span class="cell" style="background:#4c7137;">1.71</span></td>
-                        <td><span class="cell" style="background:#608a3d;">2.27</span></td>
-                        <td><span class="cell" style="background:#7eb246;">3.12</span></td>
+                        <td><span class="cell" style="background:#97ca5f;">3.18</span></td>
+                        <td><span class="cell" style="background:#aed688;">2.55</span></td>
+                        <td><span class="cell" style="background:#c6e3b1;">1.92</span></td>
+                        <td><span class="cell" style="background:#d5ebcb;">1.52</span></td>
+                        <td><span class="cell" style="background:#cee8bf;">1.71</span></td>
+                        <td><span class="cell" style="background:#b9dc9a;">2.27</span></td>
+                        <td><span class="cell" style="background:#99cb63;">3.12</span></td>
                         <td><span class="cell no-data">S/D</span></td>
                         <td><span class="cell no-data">S/D</span></td>
                         <td>-</td>
                     </tr>
                     <tr data-fecha="2026-07-29" data-alerta="1">
                         <td>29/07/2026</td>
-                        <td><span class="cell" style="background:#85bc48;">3.34</span></td>
-                        <td><span class="cell" style="background:#75a643;">2.88</span></td>
-                        <td><span class="cell" style="background:#5f893c;">2.24</span></td>
-                        <td><span class="cell" style="background:#476a35;">1.56</span></td>
-                        <td><span class="cell" style="background:#3a5a31;">1.21</span></td>
-                        <td><span class="cell" style="background:#426434;">1.44</span></td>
-                        <td><span class="cell" style="background:#5f8a3c;">2.25</span></td>
-                        <td><span class="cell" style="background:#7db046;">3.09</span></td>
+                        <td><span class="cell" style="background:#91c654;">3.34</span></td>
+                        <td><span class="cell" style="background:#a2d072;">2.88</span></td>
+                        <td><span class="cell" style="background:#badd9c;">2.24</span></td>
+                        <td><span class="cell" style="background:#d3ebc8;">1.56</span></td>
+                        <td><span class="cell" style="background:#e0f2df;">1.21</span></td>
+                        <td><span class="cell" style="background:#d8edd0;">1.44</span></td>
+                        <td><span class="cell" style="background:#badc9c;">2.25</span></td>
+                        <td><span class="cell" style="background:#9acb65;">3.09</span></td>
                         <td><span class="cell" style="background:#ff8181;">3.82</span></td>
                         <td><span class="badge" style="background:#00c853;">16:00 - 17:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-30" data-alerta="1">
                         <td>30/07/2026</td>
                         <td><span class="cell" style="background:#ff8989;">3.71</span></td>
-                        <td><span class="cell" style="background:#86bd49;">3.37</span></td>
-                        <td><span class="cell" style="background:#71a042;">2.75</span></td>
-                        <td><span class="cell" style="background:#557d39;">1.97</span></td>
-                        <td><span class="cell" style="background:#3f5f33;">1.33</span></td>
-                        <td><span class="cell" style="background:#355330;">1.07</span></td>
-                        <td><span class="cell" style="background:#426434;">1.44</span></td>
-                        <td><span class="cell" style="background:#5c863c;">2.17</span></td>
-                        <td><span class="cell" style="background:#7aac45;">3.01</span></td>
+                        <td><span class="cell" style="background:#90c652;">3.37</span></td>
+                        <td><span class="cell" style="background:#a7d27b;">2.75</span></td>
+                        <td><span class="cell" style="background:#c4e2ae;">1.97</span></td>
+                        <td><span class="cell" style="background:#dcefd7;">1.33</span></td>
+                        <td><span class="cell" style="background:#e5f5e8;">1.07</span></td>
+                        <td><span class="cell" style="background:#d8edd0;">1.44</span></td>
+                        <td><span class="cell" style="background:#bcdea1;">2.17</span></td>
+                        <td><span class="cell" style="background:#9dcd6a;">3.01</span></td>
                         <td><span class="badge" style="background:#00c853;">08:00 - 09:00</span></td>
                     </tr>
                     <tr data-fecha="2026-07-31" data-alerta="0">
                         <td>31/07/2026</td>
-                        <td><span class="cell" style="background:#87be49;">3.40</span></td>
-                        <td><span class="cell" style="background:#81b747;">3.23</span></td>
-                        <td><span class="cell" style="background:#6c9a40;">2.61</span></td>
+                        <td><span class="cell" style="background:#8fc551;">3.40</span></td>
+                        <td><span class="cell" style="background:#95c95c;">3.23</span></td>
+                        <td><span class="cell" style="background:#acd584;">2.61</span></td>
                         <td><span class="cell no-data">S/D</span></td>
                         <td><span class="cell no-data">S/D</span></td>
                         <td><span class="cell no-data">S/D</span></td>
@@ -774,7 +774,7 @@
         </div>
         
         <div class="footer">
-            <p>Generado automáticamente el 31/07/2026 a las 14:18</p>
+            <p>Generado automáticamente el 31/07/2026 a las 14:39</p>
             <p>Datos fuente: Servicio de Hidrografía Naval (SHN) de Argentina</p>
         </div>
     </div>
@@ -825,30 +825,138 @@
                 actualizarStats();
             }
 
-            function exportarExcel() {
-                const tabla = document.getElementById('tabla-resumen');
-                const clon = tabla.cloneNode(true);
-                clon.querySelectorAll('tbody tr').forEach(function(fila) {
-                    if (fila.style.display === 'none') {
-                        fila.remove();
-                    }
-                });
-                const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
-                const blob = new Blob(['﻿' + html], { type: 'application/vnd.ms-excel' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'resumen_puerto_belgrano.xls';
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-
             toggle.addEventListener('change', aplicarFiltro);
             inicio.addEventListener('change', aplicarFiltro);
             fin.addEventListener('change', aplicarFiltro);
 
             aplicarFiltro();
         })();
+
+        function descargaAutomatica(blob, nombre) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = nombre;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function guardarConDialogo(blob, nombre, mime, ext) {
+            if (window.showSaveFilePicker) {
+                try {
+                    var tipos = [{ description: 'Documento', accept: {} }];
+                    tipos[0].accept[mime] = ext;
+                    var handle = await window.showSaveFilePicker({ suggestedName: nombre, types: tipos });
+                    var writable = await handle.createWritable();
+                    await writable.write(blob);
+                    await writable.close();
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return;
+                }
+            }
+            descargaAutomatica(blob, nombre);
+        }
+
+        function exportarExcel() {
+            const tabla = document.getElementById('tabla-resumen');
+            const clon = tabla.cloneNode(true);
+            clon.querySelectorAll('tbody tr').forEach(function(fila) {
+                if (fila.style.display === 'none') fila.remove();
+            });
+            const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>' + clon.outerHTML + '</body></html>';
+            const blob = new Blob(['﻿' + html], { type: 'application/vnd.ms-excel' });
+            guardarConDialogo(blob, 'resumen_puerto_belgrano.xls', 'application/vnd.ms-excel', ['.xls']);
+        }
+
+        function guardarPDF() {
+            const filas = Array.from(document.querySelectorAll('#tabla-resumen tbody tr')).filter(function(f) { return f.style.display !== 'none'; });
+            const encabezados = Array.from(document.querySelectorAll('#tabla-resumen thead th')).map(function(t) { return t.textContent.trim(); });
+
+            const M = 20, W = 595, H = 842;
+            const RH = 18, HH = 22;
+            const CW = [85, 40, 40, 40, 40, 40, 40, 40, 40, 40, 100];
+            const tableW = CW.reduce(function(a, b) { return a + b; }, 0);
+            const xStart = M;
+            const yTop = H - M - HH;
+            const rowsPerPage = Math.max(1, Math.floor((H - 2 * M - HH) / RH));
+            const totalRows = filas.length;
+            const totalPages = Math.max(1, Math.ceil(totalRows / rowsPerPage));
+
+            function rgb(cssBg) {
+                const m = /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(cssBg || '');
+                return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : null;
+            }
+            function esc(t) { return String(t).replace(/\\/g, '\\\\').replace(/\(/g, '\(').replace(/\)/g, '\)'); }
+            function num(n) { return n.toFixed(3); }
+
+            const streams = [];
+            for (let p = 0; p < totalPages; p++) {
+                const L = [];
+                L.push('q');
+                L.push(num(44 / 255) + ' ' + num(55 / 255) + ' ' + num(72 / 255) + ' rg ' + xStart + ' ' + yTop + ' ' + tableW + ' ' + HH + ' re f');
+                let cx = xStart;
+                for (let i = 0; i < encabezados.length; i++) {
+                    const hw = CW[i];
+                    L.push('BT /F1 9 Tf 1 1 1 rg ' + num(cx + hw / 2 - encabezados[i].length * 2.2) + ' ' + num(yTop + HH / 2 - 3.2) + ' Td (' + esc(encabezados[i]) + ') Tj ET');
+                    cx += hw;
+                }
+                const inicio = p * rowsPerPage;
+                const fin = Math.min(inicio + rowsPerPage, totalRows);
+                for (let r = inicio; r < fin; r++) {
+                    const y = yTop - (r - inicio + 1) * RH;
+                    const celdas = filas[r].cells;
+                    let x = xStart;
+                    for (let j = 0; j < celdas.length; j++) {
+                        const cw = CW[j] || 40;
+                        const span = celdas[j].querySelector('span');
+                        const txt = celdas[j].textContent.trim();
+                        if (span && span.style && span.style.background) {
+                            const c = rgb(span.style.background);
+                            if (c) {
+                                L.push(num(c[0]) + ' ' + num(c[1]) + ' ' + num(c[2]) + ' rg ' + x + ' ' + y + ' ' + cw + ' ' + RH + ' re f');
+                            }
+                            L.push('BT /F1 7.5 Tf 0 0 0 rg 1 1 1 RG 0.3 w 2 Tr ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj 0 Tr ET');
+                        } else if (span && span.classList.contains('no-data')) {
+                            L.push('BT /F1 7.5 Tf 0.62 0.67 0.71 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
+                        } else {
+                            L.push('BT /F1 7.5 Tf 0.18 0.24 0.33 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
+                        }
+                        x += cw;
+                    }
+                }
+                L.push('Q');
+                streams.push(L.join('\n'));
+            }
+
+            const objs = [];
+            objs.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+            objs.push('<< /Type /Catalog /Pages 3 0 R >>');
+            const kids = [];
+            for (let k = 0; k < totalPages; k++) kids.push(String(4 + k * 2));
+            objs.push('<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + totalPages + ' >>');
+            for (let q = 0; q < totalPages; q++) {
+                objs.push('<< /Type /Page /Parent 3 0 R /MediaBox [0 0 ' + W + ' ' + H + '] /Contents ' + (5 + q * 2) + ' 0 R /Resources << /Font << /F1 1 0 R >> >> >>');
+                const data = streams[q];
+                objs.push('<< /Length ' + data.length + ' >>\nstream\n' + data + '\nendstream');
+            }
+
+            let pdf = '%PDF-1.4\n';
+            const offsets = [];
+            for (let oi = 0; oi < objs.length; oi++) {
+                offsets.push(pdf.length);
+                pdf += (oi + 1) + ' 0 obj\n' + objs[oi] + '\nendobj\n';
+            }
+            const xrefPos = pdf.length;
+            pdf += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+            for (let oi = 0; oi < objs.length; oi++) {
+                pdf += String(offsets[oi]).padStart(10, '0') + ' 00000 n \n';
+            }
+            pdf += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root 2 0 R >>\nstartxref\n' + xrefPos + '\n%%EOF';
+
+            const blob = new Blob([pdf], { type: 'application/pdf' });
+            guardarConDialogo(blob, 'resumen_puerto_belgrano.pdf', 'application/pdf', ['.pdf']);
+        }
     </script>
 </body>
 </html>
