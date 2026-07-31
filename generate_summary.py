@@ -15,6 +15,8 @@ from datetime import datetime
 DATA_DIR = "data"
 PORT_DIR = os.path.join(DATA_DIR, "Puerto_Belgrano")
 OUTPUT_FILE = os.path.join(PORT_DIR, "resumen_puerto_belgrano.html")
+PAGES_DIR = "docs"
+PAGES_OUTPUT = os.path.join(PAGES_DIR, "index.html")
 THRESHOLD = 3.50
 HOUR_START = 8
 HOUR_END = 16
@@ -96,6 +98,13 @@ def analyze_days(df):
 def generate_html(day_results):
     """Genera el archivo HTML con la tabla resumen"""
     hours_range = list(range(HOUR_START, HOUR_END + 1))
+    
+    if day_results:
+        fecha_min = day_results[0]["fecha"]
+        fecha_max = day_results[-1]["fecha"]
+    else:
+        fecha_min = ""
+        fecha_max = ""
     
     html = """<!DOCTYPE html>
 <html lang="es">
@@ -274,6 +283,56 @@ def generate_html(day_results):
             font-size: 0.8rem;
             color: #4a5568;
         }
+        .filter-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: #fffaf0;
+            border-bottom: 1px solid #feebc8;
+        }
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: #4a5568;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .filter-toggle input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #2b6cb0;
+        }
+        .filter-dates {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-field {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+        .filter-field input {
+            padding: 6px 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #2d3748;
+            background: white;
+        }
+        .filter-field input:disabled {
+            background: #edf2f7;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -295,6 +354,25 @@ def generate_html(day_results):
         </div>
 """
     
+    html += f"""
+        <div class="filter-panel">
+            <label class="filter-toggle">
+                <input type="checkbox" id="fecha-toggle" checked>
+                <span>Filtrar por rango de fechas</span>
+            </label>
+            <div class="filter-dates">
+                <div class="filter-field">
+                    <label for="fecha-inicio">Desde:</label>
+                    <input type="date" id="fecha-inicio" value="{fecha_min}">
+                </div>
+                <div class="filter-field">
+                    <label for="fecha-fin">Hasta:</label>
+                    <input type="date" id="fecha-fin" value="{fecha_max}">
+                </div>
+            </div>
+        </div>
+"""
+    
     total_days = len(day_results)
     alert_days = sum(1 for d in day_results if d["tiene_alerta"])
     normal_days = total_days - alert_days
@@ -302,15 +380,15 @@ def generate_html(day_results):
     html += f"""
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-value">{total_days}</div>
+                <div class="stat-value" id="stat-total">{total_days}</div>
                 <div class="stat-label">Días analizados</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" style="color: #e53e3e;">{alert_days}</div>
+                <div class="stat-value" id="stat-alerta" style="color: #e53e3e;">{alert_days}</div>
                 <div class="stat-label">Días con alerta</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" style="color: #38a169;">{normal_days}</div>
+                <div class="stat-value" id="stat-normal" style="color: #38a169;">{normal_days}</div>
                 <div class="stat-label">Días sin alerta</div>
             </div>
         </div>
@@ -318,7 +396,7 @@ def generate_html(day_results):
     
     html += """
         <div class="table-container">
-            <table>
+            <table id="tabla-resumen">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -334,7 +412,7 @@ def generate_html(day_results):
 """
     
     for day in day_results:
-        html += "                    <tr>\n"
+        html += f'                    <tr data-fecha="{day["fecha"]}" data-alerta="{1 if day["tiene_alerta"] else 0}">\n'
         html += f"                        <td>{day['display']}</td>\n"
         
         for h in hours_range:
@@ -365,6 +443,60 @@ def generate_html(day_results):
             <p>Datos fuente: Servicio de Hidrografía Naval (SHN) de Argentina</p>
         </div>
     </div>
+    <script>
+        (function() {
+            const toggle = document.getElementById('fecha-toggle');
+            const inicio = document.getElementById('fecha-inicio');
+            const fin = document.getElementById('fecha-fin');
+            const filas = document.querySelectorAll('#tabla-resumen tbody tr');
+            const statTotal = document.getElementById('stat-total');
+            const statAlerta = document.getElementById('stat-alerta');
+            const statNormal = document.getElementById('stat-normal');
+
+            function actualizarStats() {
+                let total = 0;
+                let alertas = 0;
+                filas.forEach(function(fila) {
+                    if (fila.style.display !== 'none') {
+                        total++;
+                        if (fila.dataset.alerta === '1') {
+                            alertas++;
+                        }
+                    }
+                });
+                statTotal.textContent = total;
+                statAlerta.textContent = alertas;
+                statNormal.textContent = total - alertas;
+            }
+
+            function aplicarFiltro() {
+                const activo = toggle.checked;
+                inicio.disabled = !activo;
+                fin.disabled = !activo;
+
+                const desde = activo && inicio.value ? new Date(inicio.value + 'T00:00:00') : null;
+                const hasta = activo && fin.value ? new Date(fin.value + 'T23:59:59') : null;
+
+                filas.forEach(function(fila) {
+                    let visible = true;
+                    if (activo) {
+                        const f = new Date(fila.dataset.fecha + 'T00:00:00');
+                        if (desde && f < desde) visible = false;
+                        if (hasta && f > hasta) visible = false;
+                    }
+                    fila.style.display = visible ? '' : 'none';
+                });
+
+                actualizarStats();
+            }
+
+            toggle.addEventListener('change', aplicarFiltro);
+            inicio.addEventListener('change', aplicarFiltro);
+            fin.addEventListener('change', aplicarFiltro);
+
+            aplicarFiltro();
+        })();
+    </script>
 </body>
 </html>
 """
@@ -399,10 +531,11 @@ def main():
     print("Generando HTML...")
     html_content = generate_html(day_results)
     
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html_content)
-    
-    print(f"[Éxito] Tabla resumen generada: {OUTPUT_FILE}")
+    for filepath in [OUTPUT_FILE, PAGES_OUTPUT]:
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print(f"[Éxito] Tabla resumen generada: {filepath}")
 
 if __name__ == "__main__":
     main()
