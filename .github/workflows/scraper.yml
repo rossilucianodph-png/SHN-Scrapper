@@ -45,8 +45,8 @@ jobs:
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         
-        # Agregamos todo el contenido de la carpeta data (CSVs y resumen HTML)
-        git add data/
+        # Agregamos todo el contenido de data (CSVs y resumen) y docs (página web)
+        git add data/ docs/
         
         # Verificamos si hay cambios locales para evitar que falle el comando git commit si no hay cambios
         if git diff --cached --quiet; then
