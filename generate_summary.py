@@ -20,6 +20,8 @@ PAGES_OUTPUT = os.path.join(PAGES_DIR, "index.html")
 THRESHOLD = 3.50
 HOUR_START = 8
 HOUR_END = 16
+RED_RANGE = 2.0
+GREEN_RANGE = 2.5
 
 def load_all_csvs():
     """Carga todos los CSVs de Puerto Belgrano del directorio data/Puerto_Belgrano/"""
@@ -49,6 +51,48 @@ def load_all_csvs():
     
     return combined
 
+def _to_rgb(color):
+    """Convierte una tupla (r,g,b) o un string hex '#rrggbb' a tupla RGB."""
+    if isinstance(color, str):
+        color = color.lstrip("#")
+        return tuple(int(color[i:i + 2], 16) for i in (0, 2, 4))
+    return color
+
+def _interp_color(c1, c2, t):
+    """Interpola entre dos colores RGB según t en [0,1]. Acepta tuplas o hex."""
+    c1 = _to_rgb(c1)
+    c2 = _to_rgb(c2)
+    t = max(0.0, min(1.0, t))
+    r = int(round(c1[0] + (c2[0] - c1[0]) * t))
+    g = int(round(c1[1] + (c2[1] - c1[1]) * t))
+    b = int(round(c1[2] + (c2[2] - c1[2]) * t))
+    return "#{:02x}{:02x}{:02x}".format(r, g, b)
+
+# Paletas de color
+RED_LIGHT = (254, 215, 215)   # #fed7d7
+RED_DARK = (155, 44, 44)      # #9b2c2c
+RED_TEXT_LIGHT = (155, 44, 44)
+GREEN_LIGHT = (198, 246, 213) # #c6f6d5
+GREEN_DARK = (47, 133, 90)    # #2f855a
+GREEN_TEXT_LIGHT = (34, 84, 61)
+BADGE_GREEN = (72, 187, 120)  # #48bb78
+BADGE_RED = (229, 62, 62)     # #e53e3e
+
+def cell_colors(valor):
+    """Devuelve (fondo, texto) para una celda según su valor de nivel.
+    Más lejos de 3.50m = color más intenso (verde o rojo)."""
+    if valor <= THRESHOLD:
+        t = min((THRESHOLD - valor) / GREEN_RANGE, 1.0)
+        return _interp_color(GREEN_LIGHT, GREEN_DARK, t), _interp_color(GREEN_TEXT_LIGHT, "#ffffff", t)
+    t = min((valor - THRESHOLD) / RED_RANGE, 1.0)
+    return _interp_color(RED_LIGHT, RED_DARK, t), _interp_color(RED_TEXT_LIGHT, "#ffffff", t)
+
+def badge_colors(horas):
+    """Devuelve (fondo, texto) del rango de alerta según cantidad de horas.
+    1 hora = verde, 5 o más = rojo, valores intermedios en el medio."""
+    t = min(max((horas - 1) / 4.0, 0.0), 1.0)
+    return _interp_color(BADGE_GREEN, BADGE_RED, t), "#ffffff"
+
 def filter_hours(df):
     """Filtra registros entre HOUR_START y HOUR_END"""
     df["hora"] = df["fecha"].dt.hour
@@ -69,7 +113,8 @@ def analyze_days(df):
             "hours": {},
             "alerta_inicio": None,
             "alerta_fin": None,
-            "tiene_alerta": False
+            "tiene_alerta": False,
+            "horas_alerta": 0
         }
         
         alert_hours = []
@@ -88,6 +133,7 @@ def analyze_days(df):
         
         if alert_hours:
             day_data["tiene_alerta"] = True
+            day_data["horas_alerta"] = len(alert_hours)
             day_data["alerta_inicio"] = f"{min(alert_hours):02d}:00"
             day_data["alerta_fin"] = f"{max(alert_hours) + 1:02d}:00" if max(alert_hours) < 23 else "23:59"
         
@@ -174,6 +220,15 @@ def generate_html(day_results):
         .legend-color.red {
             background: #f56565;
         }
+        .legend-color.gradient-red {
+            background: linear-gradient(90deg, #fed7d7, #9b2c2c);
+        }
+        .legend-color.gradient-green {
+            background: linear-gradient(90deg, #c6f6d5, #2f855a);
+        }
+        .legend-color.gradient-hours {
+            background: linear-gradient(90deg, #48bb78, #e53e3e);
+        }
         .table-container {
             padding: 20px;
             overflow-x: auto;
@@ -228,32 +283,19 @@ def generate_html(day_results):
             border-radius: 6px;
             font-weight: 600;
             min-width: 60px;
-        }
-        .cell.green {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-        .cell.red {
-            background: #fed7d7;
-            color: #9b2c2c;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+            text-align: center;
         }
         .cell.no-data {
             background: #e2e8f0;
             color: #a0aec0;
         }
-        .alert-badge {
+        .badge {
             display: inline-block;
-            background: #fc8181;
-            color: #742a2a;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
+            color: white;
         }
         .footer {
             padding: 20px;
@@ -351,6 +393,18 @@ def generate_html(day_results):
                 <div class="legend-color red"></div>
                 <span>Nivel > 3.50m (Alerta)</span>
             </div>
+            <div class="legend-item">
+                <div class="legend-color gradient-green"></div>
+                <span>Verde: pálido (cerca de 3.50) → oscuro (nivel bajo)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color gradient-red"></div>
+                <span>Rojo: pálido (cerca de 3.50) → oscuro (nivel alto)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color gradient-hours"></div>
+                <span>Rango alerta: verde (1 hora) → rojo (5+ horas)</span>
+            </div>
         </div>
 """
     
@@ -419,15 +473,16 @@ def generate_html(day_results):
             if h in day["hours"]:
                 info = day["hours"][h]
                 if info["valor"] is not None:
-                    css_class = "red" if info["alerta"] else "green"
-                    html += f'                        <td><span class="cell {css_class}">{info["valor"]:.2f}</span></td>\n'
+                    bg, txt = cell_colors(info["valor"])
+                    html += f'                        <td><span class="cell" style="background:{bg};color:{txt};">{info["valor"]:.2f}</span></td>\n'
                 else:
                     html += '                        <td><span class="cell no-data">S/D</span></td>\n'
             else:
                 html += '                        <td><span class="cell no-data">-</span></td>\n'
         
         if day["tiene_alerta"]:
-            html += f'                        <td><span class="alert-badge">{day["alerta_inicio"]} - {day["alerta_fin"]}</span></td>\n'
+            bg, txt = badge_colors(day["horas_alerta"])
+            html += f'                        <td><span class="badge" style="background:{bg};color:{txt};">{day["alerta_inicio"]} - {day["alerta_fin"]}</span></td>\n'
         else:
             html += '                        <td>-</td>\n'
         
