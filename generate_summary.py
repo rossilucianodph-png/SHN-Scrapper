@@ -699,7 +699,7 @@ def generate_html(day_results):
                             if (c) {
                                 L.push(num(c[0]) + ' ' + num(c[1]) + ' ' + num(c[2]) + ' rg ' + x + ' ' + y + ' ' + cw + ' ' + RH + ' re f n');
                             }
-                            L.push('BT /F1 7.5 Tf 0 0 0 rg 1 1 1 RG 0.3 w 2 Tr ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj 0 Tr ET');
+                            L.push('BT /F1 7.5 Tf 0 0 0 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
                         } else if (span && span.classList.contains('no-data')) {
                             L.push('BT /F1 7.5 Tf 0 0 0 rg ' + num(x + cw / 2 - txt.length * 1.9) + ' ' + num(y + RH / 2 - 2.6) + ' Td (' + esc(txt) + ') Tj ET');
                         } else {
