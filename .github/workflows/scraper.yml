@@ -6,6 +6,11 @@ on:
     - cron: '0 17 * * *'
   workflow_dispatch:
     # Permite ejecutar el scraper de forma manual desde la pestaña Actions en GitHub
+    inputs:
+      simulate_date:
+        description: 'Fecha simulada (YYYY-MM-DD) para probar el envío mensual. Ej: 2026-07-15 o 2026-08-01. Dejar vacío para usar la fecha real.'
+        required: false
+        default: ''
 
 # Se requieren permisos de escritura para que el token de GitHub pueda hacer push de los datos
 permissions:
@@ -55,3 +60,9 @@ jobs:
           git commit -m "chore(data): Actualización automática de mareas - $(date +'%Y-%m-%d')"
           git push
         fi
+
+    - name: Enviar resumen mensual por email
+      env:
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      run: python send_monthly_report.py ${{ github.event.inputs.simulate_date && format('--date {0}', github.event.inputs.simulate_date) || '' }}
