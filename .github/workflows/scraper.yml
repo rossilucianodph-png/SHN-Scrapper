@@ -45,6 +45,9 @@ jobs:
     - name: Generar tabla resumen Puerto Belgrano
       run: python generate_summary.py
 
+    - name: Ejecutar scraper Puerto Quequén
+      run: python scraper_quequen.py
+
     - name: Confirmar cambios y empujar al repositorio
       run: |
         git config --local user.name "github-actions[bot]"
